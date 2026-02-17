@@ -1,22 +1,33 @@
-# WhatsApp-Rust Copilot Instructions
+# wa-rs Development Instructions
 
-You are an expert Rust developer specializing in asynchronous networking, cryptography, and reverse-engineered protocols. Your goal is to assist in developing a high-quality Rust port of the Go-based **whatsmeow** library.
+You are an expert Rust developer specializing in asynchronous networking, cryptography, and reverse-engineered protocols. Your goal is to assist in developing **wa-rs**, a high-quality async Rust client for the WhatsApp Web API.
+
+This is a fork of [whatsapp-rust](https://github.com/jlucaso1/whatsapp-rust) by João Lucas de Oliveira Lopes, which itself is a Rust port of the Go-based **whatsmeow** library.
 
 ---
 
 ## 1. Architecture Overview
 
-The project is split into three main crates:
+The project is a Rust workspace split into these crates:
 
-- **wacore**
+- **wa-rs-core** (`wacore/`)
   A platform-agnostic library containing core logic for the WhatsApp binary protocol, cryptography primitives, IQ protocol types, and state management traits.
   It has **no runtime dependencies** on Tokio or specific databases.
 
-- **waproto**
+- **wa-rs-proto** (`waproto/`)
   Houses the Protocol Buffers definitions (`whatsapp.proto`). It contains a `build.rs` script that uses **prost** to compile these definitions into Rust structs.
 
-- **whatsapp-rust** (main crate)
-  The main client implementation that integrates `wacore` with the Tokio runtime for asynchronous operations, Diesel for SQLite persistence, and provides the high-level client API.
+- **wa-rs** (main crate, `src/`)
+  The main client implementation that integrates `wa-rs-core` with the Tokio runtime for asynchronous operations, SQLite for persistence, and provides the high-level client API.
+
+- **wa-rs-binary** (`wacore/binary/`) - WhatsApp binary protocol encoder/decoder
+- **wa-rs-derive** (`wacore/derive/`) - Derive macros (ProtocolNode, EmptyNode, StringEnum)
+- **wa-rs-libsignal** (`wacore/libsignal/`) - Signal Protocol (E2E encryption)
+- **wa-rs-noise** (`wacore/noise/`) - Noise Protocol (transport encryption)
+- **wa-rs-appstate** (`wacore/appstate/`) - App state synchronization
+- **wa-rs-sqlite-storage** (`storages/sqlite-storage/`) - SQLite storage backend
+- **wa-rs-tokio-transport** (`transports/tokio-transport/`) - Tokio WebSocket transport
+- **wa-rs-ureq-http** (`http_clients/ureq-client/`) - ureq HTTP client
 
 ### Key Components
 
@@ -36,6 +47,11 @@ The project is split into three main crates:
 - End-to-End encrypted one-on-one messaging (send/receive).
 - End-to-End encrypted group messaging (send/receive).
 - Media uploads and downloads (images, videos, documents, etc.), including all necessary encryption and decryption logic.
+
+### Changes from Upstream
+
+1. **Stable Rust support** - Removed `#![feature(portable_simd)]` and replaced SIMD optimizations with scalar implementations.
+2. **PairError event dispatch** - When pairing fails (socket timeout or error), the library dispatches `Event::PairError` instead of silently returning.
 
 ---
 
@@ -90,9 +106,9 @@ The project is split into three main crates:
 
 ---
 
-## 5. Feature Implementation Philosophy (WhatsApp Web–based)
+## 5. Feature Implementation Philosophy (WhatsApp Web-based)
 
-When adding a new feature, follow a repeatable flow that mirrors WhatsApp Web behavior while staying aligned with the project’s architecture:
+When adding a new feature, follow a repeatable flow that mirrors WhatsApp Web behavior while staying aligned with the project's architecture:
 
 1. **Identify the wire format first**
    - Capture or locate the WhatsApp Web request/response for the feature.
@@ -100,9 +116,9 @@ When adding a new feature, follow a repeatable flow that mirrors WhatsApp Web be
    - Treat this as the ground truth for what must be sent and parsed.
 
 2. **Map the feature to the right layer**
-   - **wacore**: protocol logic, state traits, cryptographic helpers, and data models that must be platform-agnostic.
-   - **whatsapp-rust**: runtime orchestration, storage integration, and user-facing API.
-   - **waproto**: protobuf structures only (avoid feature logic here).
+   - **wa-rs-core**: protocol logic, state traits, cryptographic helpers, and data models that must be platform-agnostic.
+   - **wa-rs**: runtime orchestration, storage integration, and user-facing API.
+   - **wa-rs-proto**: protobuf structures only (avoid feature logic here).
 
 3. **Build minimal primitives before high-level APIs**
    - Start with the smallest IQ/message builder that can successfully round-trip.
@@ -272,7 +288,7 @@ Constants from WhatsApp Web A/B props (`wacore/src/iq/groups.rs`):
 Replace stringly-typed attributes with enums using the `StringEnum` derive macro:
 
 ```rust
-use wacore::StringEnum;
+use wa_rs_core::StringEnum;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, StringEnum)]
 pub enum MemberAddMode {
@@ -304,10 +320,10 @@ pub enum MembershipApprovalMode {
 
 ### Derive Macros (Recommended)
 
-For simple nodes and enums, use the derive macros from `wacore-derive` (re-exported via `wacore`):
+For simple nodes and enums, use the derive macros from `wa-rs-derive` (re-exported via `wa-rs-core`):
 
 ```rust
-use wacore::{ProtocolNode, EmptyNode, StringEnum};
+use wa_rs_core::{ProtocolNode, EmptyNode, StringEnum};
 
 // Empty node (tag only)
 #[derive(EmptyNode)]
@@ -416,7 +432,7 @@ Each feature file (e.g., `groups.rs`, `blocklist.rs`) contains:
 Use helper functions from `wacore/src/iq/node.rs` for consistent parsing:
 
 ```rust
-use crate::iq::node::{required_child, required_attr, optional_attr, optional_jid};
+use wa_rs_core::iq::node::{required_child, required_attr, optional_attr, optional_jid};
 
 fn try_from_node(node: &Node) -> Result<Self> {
     let id = required_attr(node, "id")?;           // Error if missing
@@ -467,7 +483,6 @@ Before finalizing a feature/fix, always run:
 - **Format**: `cargo fmt`
 - **Lint**: `cargo clippy --all-targets`
 - **Test**: `cargo test --all`
-- **Review**: `coderabbit review --prompt-only` (if available)
 
 ---
 
@@ -498,13 +513,13 @@ You can import local crates using the `:dep` command with relative paths. Note t
 
 ```rust
 // Add dependencies (run from project root)
-:dep wacore-binary = { path = "wacore/binary" }
+:dep wa-rs-binary = { path = "wacore/binary" }
 :dep hex = "0.4"
 
 // Import modules
-use wacore_binary::jid::Jid;
-use wacore_binary::marshal::{marshal, unmarshal_ref};
-use wacore_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::marshal::{marshal, unmarshal_ref};
+use wa_rs_binary::builder::NodeBuilder;
 ```
 
 **Important**: evcxr processes each line independently. For multi-line code with local variables, wrap in a block:
@@ -519,9 +534,9 @@ use wacore_binary::builder::NodeBuilder;
 ### Example: Decoding Binary Protocol Data
 
 ```rust
-:dep wacore-binary = { path = "wacore/binary" }
+:dep wa-rs-binary = { path = "wacore/binary" }
 :dep hex = "0.4"
-use wacore_binary::marshal::unmarshal_ref;
+use wa_rs_binary::marshal::unmarshal_ref;
 
 {
     let data = hex::decode("f80f4c1a...").unwrap();
@@ -534,9 +549,9 @@ use wacore_binary::marshal::unmarshal_ref;
 ### Example: Building and Marshaling Nodes
 
 ```rust
-:dep wacore-binary = { path = "wacore/binary" }
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::marshal::marshal;
+:dep wa-rs-binary = { path = "wacore/binary" }
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::marshal::marshal;
 
 {
     let node = NodeBuilder::new("message")

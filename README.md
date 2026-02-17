@@ -1,6 +1,10 @@
-# whatsapp-rust
+# wa-rs
 
-A high-performance, async Rust library for the WhatsApp Web API. Inspired by [whatsmeow](https://github.com/tulir/whatsmeow) (Go) and [Baileys](https://github.com/WhiskeySockets/Baileys) (TypeScript).
+A high-performance, async Rust client for the WhatsApp Web API.
+
+Fork of [whatsapp-rust](https://github.com/jlucaso1/whatsapp-rust) by João Lucas de Oliveira Lopes, with stable Rust support (no nightly features required) and bug fixes.
+
+Inspired by [whatsmeow](https://github.com/tulir/whatsmeow) (Go) and [Baileys](https://github.com/WhiskeySockets/Baileys) (TypeScript).
 
 ## Features
 
@@ -46,11 +50,11 @@ A high-performance, async Rust library for the WhatsApp Web API. Inspired by [wh
 
 ```rust
 use std::sync::Arc;
-use whatsapp_rust::bot::Bot;
-use whatsapp_rust::store::SqliteStore;
-use whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory;
-use whatsapp_rust_ureq_http_client::UreqHttpClient;
-use wacore::types::events::Event;
+use wa_rs::bot::Bot;
+use wa_rs_sqlite_storage::SqliteStore;
+use wa_rs_tokio_transport::TokioWebSocketTransportFactory;
+use wa_rs_ureq_http::UreqHttpClient;
+use wa_rs_core::types::events::Event;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -88,27 +92,60 @@ cargo run -- -p 15551234567 -c 12345678 # Custom pair code
 ## Project Structure
 
 ```
-whatsapp-rust/
-├── src/                    # Main client library
-├── wacore/                 # Platform-agnostic core (no_std compatible)
-│   ├── binary/             # WhatsApp binary protocol
-│   ├── libsignal/          # Signal Protocol implementation
-│   └── appstate/           # App state management
-├── waproto/                # Protocol Buffers definitions
-├── storages/sqlite-storage # SQLite backend
-├── transports/tokio-transport
-└── http_clients/ureq-client
+wa-rs/
+├── src/                    # Main client library (wa-rs)
+├── wacore/                 # Platform-agnostic core (wa-rs-core, no_std compatible)
+│   ├── binary/             # WhatsApp binary protocol (wa-rs-binary)
+│   ├── derive/             # Derive macros (wa-rs-derive)
+│   ├── libsignal/          # Signal Protocol implementation (wa-rs-libsignal)
+│   ├── noise/              # Noise Protocol (wa-rs-noise)
+│   └── appstate/           # App state management (wa-rs-appstate)
+├── waproto/                # Protocol Buffers definitions (wa-rs-proto)
+├── storages/sqlite-storage # SQLite backend (wa-rs-sqlite-storage)
+├── transports/tokio-transport  # WebSocket transport (wa-rs-tokio-transport)
+└── http_clients/ureq-client    # HTTP client (wa-rs-ureq-http)
 ```
+
+## Crate Mapping
+
+| Crate | Description |
+|---|---|
+| `wa-rs` | Main client library |
+| `wa-rs-core` | Platform-agnostic core types and traits |
+| `wa-rs-binary` | WhatsApp binary protocol encoder/decoder |
+| `wa-rs-derive` | Derive macros |
+| `wa-rs-libsignal` | Signal Protocol (E2E encryption) |
+| `wa-rs-noise` | Noise Protocol (transport encryption) |
+| `wa-rs-appstate` | App state synchronization |
+| `wa-rs-proto` | Protocol Buffers definitions |
+| `wa-rs-sqlite-storage` | SQLite storage backend |
+| `wa-rs-tokio-transport` | Tokio WebSocket transport |
+| `wa-rs-ureq-http` | ureq HTTP client |
 
 ## Custom Backends
 
 Implement your own storage, transport, or HTTP client by implementing the respective traits. See the default implementations for reference.
 
+## Changes from Upstream
+
+This fork includes the following changes from the original [whatsapp-rust](https://github.com/jlucaso1/whatsapp-rust):
+
+1. **Stable Rust support** - Removed `#![feature(portable_simd)]` and replaced SIMD optimizations with scalar implementations, enabling compilation on stable Rust (no nightly toolchain required).
+
+2. **PairError event dispatch** - When pairing fails (socket timeout or error), the library now dispatches `Event::PairError` instead of silently returning, allowing applications to handle pairing failures gracefully.
+
 ## Disclaimer
 
 This is an unofficial, open-source reimplementation. Using custom WhatsApp clients may violate Meta's Terms of Service and could result in account suspension. Use at your own risk.
 
+## License
+
+MIT - See [LICENSE](LICENSE) for details.
+
+Original copyright (c) 2025 João Lucas de Oliveira Lopes.
+
 ## Acknowledgements
 
+- [whatsapp-rust](https://github.com/jlucaso1/whatsapp-rust) by João Lucas de Oliveira Lopes (original project)
 - [whatsmeow](https://github.com/tulir/whatsmeow) (Go)
 - [Baileys](https://github.com/WhiskeySockets/Baileys) (TypeScript)

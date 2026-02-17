@@ -3,11 +3,15 @@
 name = "wa-rs"
 version = "0.2.0"
 edition = "2024"
-authors = ["João Lucas <jlucaso@hotmail.com>"]
+authors = [
+    "Fabio Cantone <fabio.cantone@gmail.com>"
+]
 license = "MIT"
 repository = "https://github.com/homunbot/wa-rs"
 readme = "README.md"
-description = "Rust client for WhatsApp Web"
+description = "Async Rust client for WhatsApp Web — fork of whatsapp-rust with stable Rust support"
+keywords = ["whatsapp", "chat", "messaging", "signal-protocol"]
+categories = ["network-programming", "asynchronous"]
 
 [workspace]
 members = [
