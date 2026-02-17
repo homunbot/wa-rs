@@ -1,0 +1,10 @@
+/target
+/*.xml
+/*.txt
+/whatsapp_store
+/.cargo
+/.vscode
+/*.db*
+.env
+docs
+.claude

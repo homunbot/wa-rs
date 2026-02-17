@@ -1,0 +1,15 @@
+[package]
+name = "waproto"
+version = "0.2.0"
+edition = "2024"
+authors = ["João Lucas <jlucaso@hotmail.com>"]
+license = "MIT"
+repository = "https://github.com/jlucaso1/whatsapp-rust"
+description = "Protocol Buffers definitions for WhatsApp"
+
+[dependencies]
+prost = { workspace = true, features = ["derive"] }
+serde = { workspace = true }
+
+[build-dependencies]
+prost-build = { workspace = true }
