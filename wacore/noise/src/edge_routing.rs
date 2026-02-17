@@ -1,5 +1,5 @@
 use thiserror::Error;
-use wacore_binary::consts::WA_CONN_HEADER;
+use wa_rs_binary::consts::WA_CONN_HEADER;
 
 /// Maximum length for edge routing data (3 bytes max = 0xFFFFFF)
 pub const MAX_EDGE_ROUTING_LEN: usize = 0xFF_FFFF;

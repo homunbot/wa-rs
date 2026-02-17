@@ -2276,7 +2276,71 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "051eb1abcf10076295e815102942cc58f9d5e3b4560e46e53c21e8ff6f3af7b1"
 
 [[package]]
-name = "wacore"
+name = "wa-rs"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "async-channel",
+ "async-trait",
+ "base64",
+ "bytes",
+ "chrono",
+ "dashmap",
+ "env_logger",
+ "hex",
+ "log",
+ "moka",
+ "prost",
+ "rand",
+ "rand_core 0.10.0",
+ "scopeguard",
+ "serde",
+ "serde_json",
+ "thiserror 2.0.18",
+ "tokio",
+ "uuid",
+ "wa-rs-binary",
+ "wa-rs-core",
+ "wa-rs-proto",
+ "wa-rs-sqlite-storage",
+ "wa-rs-tokio-transport",
+ "wa-rs-ureq-http",
+]
+
+[[package]]
+name = "wa-rs-appstate"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "bytemuck",
+ "hex",
+ "hkdf",
+ "log",
+ "prost",
+ "serde",
+ "serde-big-array",
+ "serde_json",
+ "sha2",
+ "thiserror 2.0.18",
+ "wa-rs-binary",
+ "wa-rs-libsignal",
+ "wa-rs-proto",
+]
+
+[[package]]
+name = "wa-rs-binary"
+version = "0.2.0"
+dependencies = [
+ "flate2",
+ "iai-callgrind",
+ "phf",
+ "phf_codegen",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "wa-rs-core"
 version = "0.2.0"
 dependencies = [
  "aes",
@@ -2307,48 +2371,16 @@ dependencies = [
  "sha2",
  "thiserror 2.0.18",
  "typed-builder",
- "wacore-appstate",
- "wacore-binary",
- "wacore-derive",
- "wacore-libsignal",
- "wacore-noise",
- "waproto",
+ "wa-rs-appstate",
+ "wa-rs-binary",
+ "wa-rs-derive",
+ "wa-rs-libsignal",
+ "wa-rs-noise",
+ "wa-rs-proto",
 ]
 
 [[package]]
-name = "wacore-appstate"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "bytemuck",
- "hex",
- "hkdf",
- "log",
- "prost",
- "serde",
- "serde-big-array",
- "serde_json",
- "sha2",
- "thiserror 2.0.18",
- "wacore-binary",
- "wacore-libsignal",
- "waproto",
-]
-
-[[package]]
-name = "wacore-binary"
-version = "0.2.0"
-dependencies = [
- "flate2",
- "iai-callgrind",
- "phf",
- "phf_codegen",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "wacore-derive"
+name = "wa-rs-derive"
 version = "0.2.0"
 dependencies = [
  "proc-macro2",
@@ -2357,7 +2389,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "wacore-libsignal"
+name = "wa-rs-libsignal"
 version = "0.2.0"
 dependencies = [
  "aes",
@@ -2386,12 +2418,12 @@ dependencies = [
  "subtle",
  "thiserror 2.0.18",
  "uuid",
- "waproto",
+ "wa-rs-proto",
  "x25519-dalek",
 ]
 
 [[package]]
-name = "wacore-noise"
+name = "wa-rs-noise"
 version = "0.2.0"
 dependencies = [
  "aes-gcm",
@@ -2405,18 +2437,65 @@ dependencies = [
  "rand_core 0.10.0",
  "sha2",
  "thiserror 2.0.18",
- "wacore-binary",
- "wacore-libsignal",
- "waproto",
+ "wa-rs-binary",
+ "wa-rs-libsignal",
+ "wa-rs-proto",
 ]
 
 [[package]]
-name = "waproto"
+name = "wa-rs-proto"
 version = "0.2.0"
 dependencies = [
  "prost",
  "prost-build",
  "serde",
+]
+
+[[package]]
+name = "wa-rs-sqlite-storage"
+version = "0.2.0"
+dependencies = [
+ "async-trait",
+ "bincode 2.0.1",
+ "diesel",
+ "diesel_migrations",
+ "log",
+ "prost",
+ "serde_json",
+ "tokio",
+ "wa-rs-binary",
+ "wa-rs-core",
+ "wa-rs-proto",
+]
+
+[[package]]
+name = "wa-rs-tokio-transport"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "async-channel",
+ "async-trait",
+ "bytes",
+ "futures-util",
+ "http",
+ "log",
+ "rustls",
+ "tokio",
+ "tokio-rustls",
+ "tokio-websockets",
+ "wa-rs-core",
+ "webpki-roots",
+]
+
+[[package]]
+name = "wa-rs-ureq-http"
+version = "0.2.0"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "tokio",
+ "ureq",
+ "wa-rs-core",
 ]
 
 [[package]]
@@ -2529,85 +2608,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "22cfaf3c063993ff62e73cb4311efde4db1efb31ab78a3e5c457939ad5cc0bed"
 dependencies = [
  "rustls-pki-types",
-]
-
-[[package]]
-name = "whatsapp-rust"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "async-channel",
- "async-trait",
- "base64",
- "bytes",
- "chrono",
- "dashmap",
- "env_logger",
- "hex",
- "log",
- "moka",
- "prost",
- "rand",
- "rand_core 0.10.0",
- "scopeguard",
- "serde",
- "serde_json",
- "thiserror 2.0.18",
- "tokio",
- "uuid",
- "wacore",
- "wacore-binary",
- "waproto",
- "whatsapp-rust-sqlite-storage",
- "whatsapp-rust-tokio-transport",
- "whatsapp-rust-ureq-http-client",
-]
-
-[[package]]
-name = "whatsapp-rust-sqlite-storage"
-version = "0.2.0"
-dependencies = [
- "async-trait",
- "bincode 2.0.1",
- "diesel",
- "diesel_migrations",
- "log",
- "prost",
- "serde_json",
- "tokio",
- "wacore",
- "wacore-binary",
- "waproto",
-]
-
-[[package]]
-name = "whatsapp-rust-tokio-transport"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "async-channel",
- "async-trait",
- "bytes",
- "futures-util",
- "http",
- "log",
- "rustls",
- "tokio",
- "tokio-rustls",
- "tokio-websockets",
- "wacore",
- "webpki-roots",
-]
-
-[[package]]
-name = "whatsapp-rust-ureq-http-client"
-version = "0.2.0"
-dependencies = [
- "anyhow",
- "async-trait",
- "tokio",
- "ureq",
- "wacore",
 ]
 
 [[package]]

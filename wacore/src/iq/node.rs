@@ -5,8 +5,8 @@
 
 use crate::protocol::ProtocolNode;
 use anyhow::anyhow;
-use wacore_binary::jid::Jid;
-use wacore_binary::node::Node;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::Node;
 
 /// Get a required child node by tag, returning an error if not found.
 pub fn required_child<'a>(node: &'a Node, tag: &str) -> Result<&'a Node, anyhow::Error> {

@@ -1,10 +1,10 @@
 [package]
-name = "whatsapp-rust-tokio-transport"
+name = "wa-rs-tokio-transport"
 version = "0.2.0"
 edition = "2024"
 authors = ["João Lucas <jlucaso@hotmail.com>"]
 license = "MIT"
-repository = "https://github.com/jlucaso1/whatsapp-rust"
+repository = "https://github.com/homunbot/wa-rs"
 description = "Tokio-based WebSocket transport for whatsapp-rust"
 
 [features]
@@ -39,5 +39,5 @@ tokio-websockets = { version = "0.13.0", features = [
     "rand",
     "ring",
 ] }
-wacore = { workspace = true }
+wa-rs-core = { workspace = true }
 webpki-roots = "1.0.4"

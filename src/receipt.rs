@@ -4,10 +4,10 @@ use crate::types::presence::ReceiptType;
 use log::info;
 use std::collections::HashMap;
 use std::sync::Arc;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, JidExt as _};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, JidExt as _};
 
-use wacore_binary::node::Node;
+use wa_rs_binary::node::Node;
 
 impl Client {
     pub(crate) async fn handle_receipt(self: &Arc<Self>, node: Arc<Node>) {
@@ -78,7 +78,7 @@ impl Client {
     /// - Group messages - sends receipt to the group JID with the sender as a participant.
     /// - It correctly skips sending receipts for self-sent messages, status broadcasts, or messages without an ID.
     pub(crate) async fn send_delivery_receipt(&self, info: &crate::types::message::MessageInfo) {
-        use wacore_binary::jid::STATUS_BROADCAST_USER;
+        use wa_rs_binary::jid::STATUS_BROADCAST_USER;
 
         // Don't send receipts for our own messages, status broadcasts, or if ID is missing.
         if info.source.is_from_me
@@ -139,7 +139,7 @@ impl Client {
 
         // Additional message IDs go into <list><item id="..."/></list>
         if message_ids.len() > 1 {
-            let items: Vec<wacore_binary::node::Node> = message_ids[1..]
+            let items: Vec<wa_rs_binary::node::Node> = message_ids[1..]
                 .iter()
                 .map(|id| NodeBuilder::new("item").attr("id", id).build())
                 .collect();

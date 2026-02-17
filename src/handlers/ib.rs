@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use log::{debug, warn};
 use std::sync::Arc;
 use std::sync::atomic::Ordering;
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::node::{Node, NodeContent};
 
 /// Handler for `<ib>` (information broadcast) stanzas.
 ///

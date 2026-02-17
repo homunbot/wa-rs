@@ -8,9 +8,9 @@
 //! ## Random Code (Default)
 //!
 //! ```rust,no_run
-//! use whatsapp_rust::pair_code::PairCodeOptions;
+//! use wa_rs::pair_code::PairCodeOptions;
 //!
-//! # async fn example(client: std::sync::Arc<whatsapp_rust::Client>) -> Result<(), Box<dyn std::error::Error>> {
+//! # async fn example(client: std::sync::Arc<wa_rs::Client>) -> Result<(), Box<dyn std::error::Error>> {
 //! let options = PairCodeOptions {
 //!     phone_number: "15551234567".to_string(),
 //!     ..Default::default()
@@ -27,9 +27,9 @@
 //! (characters: `123456789ABCDEFGHJKLMNPQRSTVWXYZ` - excludes 0, I, O, U):
 //!
 //! ```rust,no_run
-//! use whatsapp_rust::pair_code::PairCodeOptions;
+//! use wa_rs::pair_code::PairCodeOptions;
 //!
-//! # async fn example(client: std::sync::Arc<whatsapp_rust::Client>) -> Result<(), Box<dyn std::error::Error>> {
+//! # async fn example(client: std::sync::Arc<wa_rs::Client>) -> Result<(), Box<dyn std::error::Error>> {
 //! let options = PairCodeOptions {
 //!     phone_number: "15551234567".to_string(),
 //!     custom_code: Some("MYCODE12".to_string()), // Must be exactly 8 valid chars
@@ -51,13 +51,13 @@ use crate::types::events::Event;
 use log::{error, info, warn};
 use rand::TryRngCore;
 use std::sync::Arc;
-use wacore::libsignal::protocol::KeyPair;
-use wacore::pair_code::{PairCodeError, PairCodeState, PairCodeUtils};
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_core::libsignal::protocol::KeyPair;
+use wa_rs_core::pair_code::{PairCodeError, PairCodeState, PairCodeUtils};
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::{Node, NodeContent};
 
 // Re-export types for user convenience
-pub use wacore::pair_code::{PairCodeOptions, PlatformId};
+pub use wa_rs_core::pair_code::{PairCodeOptions, PlatformId};
 
 impl Client {
     /// Initiates pair code authentication as an alternative to QR code pairing.
@@ -80,9 +80,9 @@ impl Client {
     /// # Example
     ///
     /// ```rust,no_run
-    /// use whatsapp_rust::pair_code::PairCodeOptions;
+    /// use wa_rs::pair_code::PairCodeOptions;
     ///
-    /// # async fn example(client: std::sync::Arc<whatsapp_rust::Client>) -> Result<(), Box<dyn std::error::Error>> {
+    /// # async fn example(client: std::sync::Arc<wa_rs::Client>) -> Result<(), Box<dyn std::error::Error>> {
     /// let options = PairCodeOptions {
     ///     phone_number: "15551234567".to_string(),
     ///     show_push_notification: true,
@@ -328,7 +328,7 @@ pub(crate) async fn handle_pair_code_notification(client: &Arc<Client>, node: &N
     // Prepare encrypted key bundle
     // TODO: Store `new_adv_secret` via DeviceCommand::SetAdvSecretKey to enable HMAC
     // verification in pair-success. Currently the HMAC check in do_pair_crypto is
-    // commented out, so pairing works without it. See wacore/src/pair.rs:147-153.
+    // commented out, so pairing works without it. See wa_rs_core/src/pair.rs:147-153.
     let (wrapped_bundle, _new_adv_secret) = match PairCodeUtils::prepare_key_bundle(
         &ephemeral_keypair,
         &primary_ephemeral_pub,

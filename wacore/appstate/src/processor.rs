@@ -10,7 +10,7 @@ use crate::hash::{HashState, generate_patch_mac};
 use crate::keys::ExpandedAppStateKeys;
 use log::{debug, trace};
 use serde::{Deserialize, Serialize};
-use waproto::whatsapp as wa;
+use wa_rs_proto::whatsapp as wa;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AppStateMutationMAC {
@@ -380,7 +380,7 @@ mod tests {
     use crate::keys::expand_app_state_keys;
     use crate::lthash::WAPATCH_INTEGRITY;
     use prost::Message;
-    use wacore_libsignal::crypto::aes_256_cbc_encrypt_into;
+    use wa_rs_libsignal::crypto::aes_256_cbc_encrypt_into;
 
     fn create_encrypted_record(
         op: wa::syncd_mutation::SyncdOperation,

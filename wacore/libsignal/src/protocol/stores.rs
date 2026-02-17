@@ -1,8 +1,8 @@
-// Re-exporting structures from waproto to avoid duplication
-pub use waproto::whatsapp::{
+// Re-exporting structures from wa_rs_proto to avoid duplication
+pub use wa_rs_proto::whatsapp::{
     IdentityKeyPairStructure, PreKeyRecordStructure, RecordStructure, SenderKeyRecordStructure,
     SenderKeyStateStructure, SessionStructure, SignedPreKeyRecordStructure,
 };
 
-pub use waproto::whatsapp::sender_key_state_structure;
-pub use waproto::whatsapp::session_structure;
+pub use wa_rs_proto::whatsapp::sender_key_state_structure;
+pub use wa_rs_proto::whatsapp::session_structure;

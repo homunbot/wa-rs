@@ -3,7 +3,7 @@ use crate::protocol::{
     Timestamp,
 };
 use chrono::Utc;
-use waproto::whatsapp as wa;
+use wa_rs_proto::whatsapp as wa;
 
 pub fn new_pre_key_record(id: u32, key_pair: &KeyPair) -> wa::PreKeyRecordStructure {
     wa::PreKeyRecordStructure {

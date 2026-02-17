@@ -19,7 +19,7 @@ impl MessageUtils {
         plaintext
     }
 
-    pub fn participant_list_hash(devices: &[wacore_binary::jid::Jid]) -> Result<String> {
+    pub fn participant_list_hash(devices: &[wa_rs_binary::jid::Jid]) -> Result<String> {
         let mut jids: Vec<String> = devices.iter().map(|j| j.to_ad_string()).collect();
         jids.sort();
 

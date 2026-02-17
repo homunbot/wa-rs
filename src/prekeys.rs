@@ -1,17 +1,17 @@
 //! Pre-key management for Signal Protocol.
 //!
-//! Protocol types are defined in `wacore::iq::prekeys`.
+//! Protocol types are defined in `wa_rs_core::iq::prekeys`.
 
 use crate::client::Client;
 use anyhow;
 use log;
 use rand::TryRngCore;
-use wacore::iq::prekeys::{PreKeyCountSpec, PreKeyFetchSpec, PreKeyUploadSpec};
-use wacore::libsignal::protocol::{KeyPair, PreKeyBundle, PublicKey};
-use wacore::libsignal::store::record_helpers::new_pre_key_record;
-use wacore_binary::jid::Jid;
+use wa_rs_core::iq::prekeys::{PreKeyCountSpec, PreKeyFetchSpec, PreKeyUploadSpec};
+use wa_rs_core::libsignal::protocol::{KeyPair, PreKeyBundle, PublicKey};
+use wa_rs_core::libsignal::store::record_helpers::new_pre_key_record;
+use wa_rs_binary::jid::Jid;
 
-pub use wacore::prekeys::PreKeyUtils;
+pub use wa_rs_core::prekeys::PreKeyUtils;
 
 const WANTED_PRE_KEY_COUNT: usize = 50;
 const MIN_PRE_KEY_COUNT: usize = 5;

@@ -1,13 +1,13 @@
 //! Spam reporting feature.
 //!
-//! Types and IQ specification are defined in `wacore::iq::spam_report`.
+//! Types and IQ specification are defined in `wa_rs_core::iq::spam_report`.
 
 use crate::client::Client;
 use crate::request::IqError;
-use wacore::iq::spam_report::SpamReportSpec;
+use wa_rs_core::iq::spam_report::SpamReportSpec;
 
-// Re-export types from wacore
-pub use wacore::types::{SpamFlow, SpamReportRequest, SpamReportResult, build_spam_list_node};
+// Re-export types from wa_rs_core
+pub use wa_rs_core::types::{SpamFlow, SpamReportRequest, SpamReportResult, build_spam_list_node};
 
 impl Client {
     /// Send a spam report to WhatsApp.
@@ -44,7 +44,7 @@ impl Client {
 #[allow(deprecated)]
 mod tests {
     use super::*;
-    use wacore_binary::jid::Jid;
+    use wa_rs_binary::jid::Jid;
 
     #[test]
     fn test_spam_flow_as_str() {

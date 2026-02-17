@@ -14,12 +14,12 @@ use anyhow::{Result, anyhow};
 use prost::Message as ProtoMessage;
 use rand::{CryptoRng, Rng, TryRngCore as _};
 use std::collections::HashSet;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, JidExt as _};
-use wacore_binary::node::{Attrs, Node};
-use wacore_libsignal::crypto::aes_256_cbc_encrypt_into;
-use waproto::whatsapp as wa;
-use waproto::whatsapp::message::DeviceSentMessage;
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, JidExt as _};
+use wa_rs_binary::node::{Attrs, Node};
+use wa_rs_libsignal::crypto::aes_256_cbc_encrypt_into;
+use wa_rs_proto::whatsapp as wa;
+use wa_rs_proto::whatsapp::message::DeviceSentMessage;
 
 pub async fn encrypt_group_message<S, R>(
     sender_key_store: &mut S,
@@ -916,7 +916,7 @@ mod tests {
     use crate::client::context::{GroupInfo, SendContextResolver};
     use crate::libsignal::protocol::{IdentityKeyPair, KeyPair, PreKeyBundle};
     use std::collections::HashMap;
-    use wacore_binary::jid::Jid;
+    use wa_rs_binary::jid::Jid;
 
     /// Mock implementation of SendContextResolver for testing
     struct MockSendContextResolver {

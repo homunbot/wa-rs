@@ -1,7 +1,7 @@
 //! Blocklist IQ types and specifications.
 //!
 //! This module provides type-safe structures for blocklist operations following
-//! the `ProtocolNode` pattern defined in `wacore/src/protocol.rs`.
+//! the `ProtocolNode` pattern defined in `wa_rs_core/src/protocol.rs`.
 
 use crate::StringEnum;
 use crate::iq::node::{optional_child, optional_u64};
@@ -10,9 +10,9 @@ use crate::protocol::ProtocolNode;
 use crate::request::InfoQuery;
 use anyhow::{Result, anyhow};
 use log::warn;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::{Node, NodeContent};
 /// IQ namespace for blocklist operations.
 pub const BLOCKLIST_IQ_NAMESPACE: &str = "blocklist";
 /// Action to perform on a blocklist entry.

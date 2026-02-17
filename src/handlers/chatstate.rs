@@ -5,11 +5,11 @@ use crate::client::Client;
 use async_trait::async_trait;
 use log::debug;
 use std::sync::Arc;
-use wacore::iq::chatstate::{
+use wa_rs_core::iq::chatstate::{
     ChatstateParseError, ChatstateSource, ChatstateStanza, ReceivedChatState,
 };
-use wacore_binary::jid::Jid;
-use wacore_binary::node::Node;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::Node;
 
 /// Event for incoming chatstate (`<chatstate/>`) stanzas.
 ///

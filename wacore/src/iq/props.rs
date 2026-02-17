@@ -26,9 +26,9 @@
 use crate::iq::spec::IqSpec;
 use crate::protocol::ProtocolNode;
 use crate::request::InfoQuery;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::{Node, NodeContent};
 
 /// IQ namespace for A/B props.
 pub const PROPS_NAMESPACE: &str = "abt";

@@ -1,9 +1,9 @@
 use crate::request::InfoQuery;
-use wacore_binary::node::Node;
+use wa_rs_binary::node::Node;
 
 /// A reusable IQ specification that pairs a request builder with a response parser.
 ///
-/// This keeps protocol-level IQ logic in `wacore`, while runtime orchestration
+/// This keeps protocol-level IQ logic in `wa_rs_core`, while runtime orchestration
 /// (sending, retries, timeouts) stays in the main crate.
 pub trait IqSpec {
     /// The output type produced by parsing the IQ response.

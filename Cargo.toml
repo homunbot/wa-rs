@@ -1,11 +1,11 @@
 
 [package]
-name = "whatsapp-rust"
+name = "wa-rs"
 version = "0.2.0"
 edition = "2024"
 authors = ["João Lucas <jlucaso@hotmail.com>"]
 license = "MIT"
-repository = "https://github.com/jlucaso1/whatsapp-rust"
+repository = "https://github.com/homunbot/wa-rs"
 readme = "README.md"
 description = "Rust client for WhatsApp Web"
 
@@ -55,22 +55,22 @@ thiserror = "2.0.17"
 tokio = { version = "1.48.0", default-features = false }
 
 # Internal workspace crates
-wacore = { path = "./wacore", version = "0.2.0" }
-wacore-appstate = { path = "./wacore/appstate", version = "0.2.0" }
-wacore-binary = { path = "./wacore/binary", version = "0.2.0" }
-wacore-derive = { path = "./wacore/derive", version = "0.2.0" }
-wacore-libsignal = { path = "./wacore/libsignal", version = "0.2.0" }
-wacore-noise = { path = "./wacore/noise", version = "0.2.0" }
-waproto = { path = "./waproto", version = "0.2.0" }
+wa-rs-core = { path = "./wacore", version = "0.2.0" }
+wa-rs-appstate = { path = "./wacore/appstate", version = "0.2.0" }
+wa-rs-binary = { path = "./wacore/binary", version = "0.2.0" }
+wa-rs-derive = { path = "./wacore/derive", version = "0.2.0" }
+wa-rs-libsignal = { path = "./wacore/libsignal", version = "0.2.0" }
+wa-rs-noise = { path = "./wacore/noise", version = "0.2.0" }
+wa-rs-proto = { path = "./waproto", version = "0.2.0" }
 
 [features]
 debug-snapshots = []
-danger-skip-tls-verify = ["whatsapp-rust-tokio-transport?/danger-skip-tls-verify"]
+danger-skip-tls-verify = ["wa-rs-tokio-transport?/danger-skip-tls-verify"]
 default = ["sqlite-storage", "tokio-transport", "ureq-client", "tokio-native"]
-ureq-client = ["dep:whatsapp-rust-ureq-http-client"]
-tokio-transport = ["dep:whatsapp-rust-tokio-transport"]
+ureq-client = ["dep:wa-rs-ureq-http"]
+tokio-transport = ["dep:wa-rs-tokio-transport"]
 signal = ["tokio/signal"]
-sqlite-storage = ["whatsapp-rust-sqlite-storage"]
+sqlite-storage = ["wa-rs-sqlite-storage"]
 tokio-native = ["tokio/rt-multi-thread"]
 
 [dependencies]
@@ -93,12 +93,12 @@ serde = { workspace = true }
 serde_json = { workspace = true, features = ["std"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["macros", "rt", "sync", "time"] }
-wacore = { workspace = true }
-wacore-binary = { workspace = true }
-waproto = { workspace = true }
-whatsapp-rust-sqlite-storage = { path = "./storages/sqlite-storage", version = "0.2.0", optional = true }
-whatsapp-rust-tokio-transport = { path = "./transports/tokio-transport", version = "0.2.0", optional = true }
-whatsapp-rust-ureq-http-client = { path = "./http_clients/ureq-client", version = "0.2.0", optional = true }
+wa-rs-core = { workspace = true }
+wa-rs-binary = { workspace = true }
+wa-rs-proto = { workspace = true }
+wa-rs-sqlite-storage = { path = "./storages/sqlite-storage", version = "0.2.0", optional = true }
+wa-rs-tokio-transport = { path = "./transports/tokio-transport", version = "0.2.0", optional = true }
+wa-rs-ureq-http = { path = "./http_clients/ureq-client", version = "0.2.0", optional = true }
 
 [dev-dependencies]
 uuid = { version = "1.0", features = ["v4"] }

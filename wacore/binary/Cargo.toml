@@ -1,10 +1,10 @@
 [package]
-name = "wacore-binary"
+name = "wa-rs-binary"
 version = "0.2.0"
 edition = "2024"
 authors = ["João Lucas <jlucaso@hotmail.com>"]
 license = "MIT"
-repository = "https://github.com/jlucaso1/whatsapp-rust"
+repository = "https://github.com/homunbot/wa-rs"
 description = "Binary data and constants for WhatsApp protocol"
 
 [lib]

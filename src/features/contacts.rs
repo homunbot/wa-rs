@@ -1,19 +1,19 @@
 //! Contact information feature.
 //!
-//! Profile picture types are defined in `wacore::iq::contacts`.
-//! Usync types are defined in `wacore::iq::usync`.
+//! Profile picture types are defined in `wa_rs_core::iq::contacts`.
+//! Usync types are defined in `wa_rs_core::iq::usync`.
 
 use crate::client::Client;
 use anyhow::Result;
 use log::debug;
 use std::collections::HashMap;
-use wacore::iq::contacts::{ProfilePictureSpec, ProfilePictureType};
-use wacore::iq::usync::{ContactInfoSpec, IsOnWhatsAppSpec, UserInfoSpec};
-use wacore_binary::jid::{Jid, JidExt};
+use wa_rs_core::iq::contacts::{ProfilePictureSpec, ProfilePictureType};
+use wa_rs_core::iq::usync::{ContactInfoSpec, IsOnWhatsAppSpec, UserInfoSpec};
+use wa_rs_binary::jid::{Jid, JidExt};
 
-// Re-export types from wacore
-pub use wacore::iq::contacts::ProfilePicture;
-pub use wacore::iq::usync::{ContactInfo, IsOnWhatsAppResult, UserInfo};
+// Re-export types from wa_rs_core
+pub use wa_rs_core::iq::contacts::ProfilePicture;
+pub use wa_rs_core::iq::usync::{ContactInfo, IsOnWhatsAppResult, UserInfo};
 
 pub struct Contacts<'a> {
     client: &'a Client,

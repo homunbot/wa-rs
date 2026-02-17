@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use base64::Engine;
 use serde::Deserialize;
-use wacore::download::MediaType;
+use wa_rs_core::download::MediaType;
 
 use crate::client::Client;
 use crate::http::HttpRequest;
@@ -26,7 +26,7 @@ impl Client {
     pub async fn upload(&self, data: Vec<u8>, media_type: MediaType) -> Result<UploadResponse> {
         let enc = tokio::task::spawn_blocking({
             let data = data.clone();
-            move || wacore::upload::encrypt_media(&data, media_type)
+            move || wa_rs_core::upload::encrypt_media(&data, media_type)
         })
         .await??;
 

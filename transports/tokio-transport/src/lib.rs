@@ -12,7 +12,7 @@ use std::sync::{Arc, Once};
 use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 use tokio_websockets::{ClientBuilder, Connector, MaybeTlsStream, Message, WebSocketStream};
-use wacore::net::{Transport, TransportEvent, TransportFactory, WHATSAPP_WEB_WS_URL};
+use wa_rs_core::net::{Transport, TransportEvent, TransportFactory, WHATSAPP_WEB_WS_URL};
 
 /// Ensures the rustls crypto provider is only installed once
 static CRYPTO_PROVIDER_INIT: Once = Once::new();

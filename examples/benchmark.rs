@@ -1,13 +1,13 @@
 use chrono::Local;
 use log::{error, info};
 use std::sync::Arc;
-use wacore::proto_helpers::MessageExt;
-use wacore::types::events::Event;
-use waproto::whatsapp as wa;
-use whatsapp_rust::bot::{Bot, MessageContext};
-use whatsapp_rust::store::SqliteStore;
-use whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory;
-use whatsapp_rust_ureq_http_client::UreqHttpClient;
+use wa_rs_core::proto_helpers::MessageExt;
+use wa_rs_core::types::events::Event;
+use wa_rs_proto::whatsapp as wa;
+use wa_rs::bot::{Bot, MessageContext};
+use wa_rs::store::SqliteStore;
+use wa_rs_tokio_transport::TokioWebSocketTransportFactory;
+use wa_rs_ureq_http::UreqHttpClient;
 
 fn main() {
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("warn"))

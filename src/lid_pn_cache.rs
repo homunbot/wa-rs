@@ -14,7 +14,7 @@
 use std::collections::HashMap;
 use tokio::sync::RwLock;
 
-pub use wacore::types::{LearningSource, LidPnEntry};
+pub use wa_rs_core::types::{LearningSource, LidPnEntry};
 
 /// Cache for LID to Phone Number mappings.
 ///

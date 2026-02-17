@@ -84,7 +84,7 @@ impl SignalMessage {
         sender_identity_key: &IdentityKey,
         receiver_identity_key: &IdentityKey,
     ) -> Result<Self> {
-        let message = waproto::whatsapp::SignalMessage {
+        let message = wa_rs_proto::whatsapp::SignalMessage {
             ratchet_key: Some(sender_ratchet_key.serialize().to_vec()),
             counter: Some(counter),
             previous_counter: Some(previous_counter),
@@ -205,7 +205,7 @@ impl TryFrom<&[u8]> for SignalMessage {
             ));
         }
 
-        let proto_structure = waproto::whatsapp::SignalMessage::decode(
+        let proto_structure = wa_rs_proto::whatsapp::SignalMessage::decode(
             &value[1..value.len() - SignalMessage::MAC_LENGTH],
         )
         .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
@@ -256,7 +256,7 @@ impl PreKeySignalMessage {
         identity_key: IdentityKey,
         message: SignalMessage,
     ) -> Result<Self> {
-        let proto_message = waproto::whatsapp::PreKeySignalMessage {
+        let proto_message = wa_rs_proto::whatsapp::PreKeySignalMessage {
             registration_id: Some(registration_id),
             pre_key_id: pre_key_id.map(|id| id.into()),
             signed_pre_key_id: Some(signed_pre_key_id.into()),
@@ -344,7 +344,7 @@ impl TryFrom<&[u8]> for PreKeySignalMessage {
             ));
         }
 
-        let proto_structure = waproto::whatsapp::PreKeySignalMessage::decode(&value[1..])
+        let proto_structure = wa_rs_proto::whatsapp::PreKeySignalMessage::decode(&value[1..])
             .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
 
         let base_key = proto_structure
@@ -413,7 +413,7 @@ impl SenderKeyMessage {
         csprng: &mut R,
         signature_key: &PrivateKey,
     ) -> Result<Self> {
-        let proto_message = waproto::whatsapp::SenderKeyMessage {
+        let proto_message = wa_rs_proto::whatsapp::SenderKeyMessage {
             id: Some(chain_id),
             iteration: Some(iteration),
             ciphertext: Some(ciphertext.into_vec()),
@@ -492,7 +492,7 @@ impl SenderKeyMessage {
     fn decode_ciphertext(&self) -> Result<Box<[u8]>> {
         // serialized layout: [version_byte || protobuf || signature]
         let proto_bytes = &self.serialized[1..self.serialized.len() - Self::SIGNATURE_LEN];
-        let proto = waproto::whatsapp::SenderKeyMessage::decode(proto_bytes)
+        let proto = wa_rs_proto::whatsapp::SenderKeyMessage::decode(proto_bytes)
             .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
         let ciphertext = proto
             .ciphertext
@@ -530,7 +530,7 @@ impl TryFrom<&[u8]> for SenderKeyMessage {
                 message_version,
             ));
         }
-        let proto_structure = waproto::whatsapp::SenderKeyMessage::decode(
+        let proto_structure = wa_rs_proto::whatsapp::SenderKeyMessage::decode(
             &value[1..value.len() - Self::SIGNATURE_LEN],
         )
         .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
@@ -577,7 +577,7 @@ impl SenderKeyDistributionMessage {
         chain_key: [u8; 32],
         signing_key: PublicKey,
     ) -> Result<Self> {
-        let proto_message = waproto::whatsapp::SenderKeyDistributionMessage {
+        let proto_message = wa_rs_proto::whatsapp::SenderKeyDistributionMessage {
             id: Some(chain_id),
             iteration: Some(iteration),
             chain_key: Some(chain_key.to_vec()),
@@ -658,7 +658,7 @@ impl TryFrom<&[u8]> for SenderKeyDistributionMessage {
             ));
         }
 
-        let proto_structure = waproto::whatsapp::SenderKeyDistributionMessage::decode(&value[1..])
+        let proto_structure = wa_rs_proto::whatsapp::SenderKeyDistributionMessage::decode(&value[1..])
             .map_err(|_| SignalProtocolError::InvalidProtobufEncoding)?;
 
         let chain_id = proto_structure

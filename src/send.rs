@@ -1,12 +1,12 @@
 use crate::client::Client;
 use crate::store::signal_adapter::SignalProtocolStoreAdapter;
 use anyhow::anyhow;
-use wacore::client::context::SendContextResolver;
-use wacore::libsignal::protocol::SignalProtocolError;
-use wacore::types::jid::JidExt;
-use wacore_binary::jid::{DeviceKey, Jid, JidExt as _};
-use wacore_binary::node::Node;
-use waproto::whatsapp as wa;
+use wa_rs_core::client::context::SendContextResolver;
+use wa_rs_core::libsignal::protocol::SignalProtocolError;
+use wa_rs_core::types::jid::JidExt;
+use wa_rs_binary::jid::{DeviceKey, Jid, JidExt as _};
+use wa_rs_binary::node::Node;
+use wa_rs_proto::whatsapp as wa;
 
 /// Options for sending messages with additional customization.
 #[derive(Debug, Clone, Default)]
@@ -159,7 +159,7 @@ impl Client {
             None => self.generate_message_id().await,
         };
 
-        let stanza_to_send: wacore_binary::Node = if peer && !to.is_group() {
+        let stanza_to_send: wa_rs_binary::Node = if peer && !to.is_group() {
             // Peer messages are only valid for individual users, not groups
             // Resolve encryption JID and acquire lock ONLY for encryption
             let encryption_jid = self.resolve_encryption_jid(&to).await;
@@ -176,7 +176,7 @@ impl Client {
             let device_store_arc = self.persistence_manager.get_device_arc().await;
             let mut store_adapter = SignalProtocolStoreAdapter::new(device_store_arc);
 
-            wacore::send::prepare_peer_stanza(
+            wa_rs_core::send::prepare_peer_stanza(
                 &mut store_adapter.session_store,
                 &mut store_adapter.identity_store,
                 to,
@@ -224,8 +224,8 @@ impl Client {
             }
 
             let force_skdm = {
-                use wacore::libsignal::protocol::SenderKeyStore;
-                use wacore::libsignal::store::sender_key_name::SenderKeyName;
+                use wa_rs_core::libsignal::protocol::SenderKeyStore;
+                use wa_rs_core::libsignal::store::sender_key_name::SenderKeyName;
                 let mut device_guard = device_store_arc.write().await;
                 let sender_address = own_sending_jid.to_protocol_address();
                 let sender_key_name =
@@ -241,7 +241,7 @@ impl Client {
 
             let mut store_adapter = SignalProtocolStoreAdapter::new(device_store_arc.clone());
 
-            let mut stores = wacore::send::SignalStores {
+            let mut stores = wa_rs_core::send::SignalStores {
                 session_store: &mut store_adapter.session_store,
                 identity_store: &mut store_adapter.identity_store,
                 prekey_store: &mut store_adapter.pre_key_store,
@@ -332,7 +332,7 @@ impl Client {
             let is_full_distribution = force_skdm || skdm_target_devices.is_none();
             let devices_receiving_skdm: Vec<Jid> = skdm_target_devices.clone().unwrap_or_default();
 
-            match wacore::send::prepare_group_stanza(
+            match wa_rs_core::send::prepare_group_stanza(
                 &mut stores,
                 self,
                 &mut group_info,
@@ -394,7 +394,7 @@ impl Client {
 
                         let mut store_adapter_retry =
                             SignalProtocolStoreAdapter::new(device_store_arc.clone());
-                        let mut stores_retry = wacore::send::SignalStores {
+                        let mut stores_retry = wa_rs_core::send::SignalStores {
                             session_store: &mut store_adapter_retry.session_store,
                             identity_store: &mut store_adapter_retry.identity_store,
                             prekey_store: &mut store_adapter_retry.pre_key_store,
@@ -402,7 +402,7 @@ impl Client {
                             sender_key_store: &mut store_adapter_retry.sender_key_store,
                         };
 
-                        wacore::send::prepare_group_stanza(
+                        wa_rs_core::send::prepare_group_stanza(
                             &mut stores_retry,
                             self,
                             &mut group_info,
@@ -466,7 +466,7 @@ impl Client {
             let device_store_arc = self.persistence_manager.get_device_arc().await;
             let mut store_adapter = SignalProtocolStoreAdapter::new(device_store_arc);
 
-            let mut stores = wacore::send::SignalStores {
+            let mut stores = wa_rs_core::send::SignalStores {
                 session_store: &mut store_adapter.session_store,
                 identity_store: &mut store_adapter.identity_store,
                 prekey_store: &mut store_adapter.pre_key_store,
@@ -474,7 +474,7 @@ impl Client {
                 sender_key_store: &mut store_adapter.sender_key_store,
             };
 
-            wacore::send::prepare_dm_stanza(
+            wa_rs_core::send::prepare_dm_stanza(
                 &mut stores,
                 self,
                 &own_jid,
@@ -496,11 +496,11 @@ impl Client {
     /// If a valid (non-expired) token exists, adds a `<tctoken>` child node.
     /// If the token is missing or expired, attempts to issue new tokens via IQ.
     async fn maybe_include_tc_token(&self, to: &Jid, extra_nodes: &mut Vec<Node>) {
-        use wacore::iq::tctoken::{
+        use wa_rs_core::iq::tctoken::{
             IssuePrivacyTokensSpec, build_tc_token_node, is_tc_token_expired,
             should_send_new_tc_token,
         };
-        use wacore::store::traits::TcTokenEntry;
+        use wa_rs_core::store::traits::TcTokenEntry;
 
         // Skip for own JID — no need to send privacy token to ourselves
         let snapshot = self.persistence_manager.get_device_snapshot().await;
@@ -602,7 +602,7 @@ impl Client {
     ///
     /// Used by profile picture, presence subscribe, and other features that need tctoken gating.
     pub(crate) async fn lookup_tc_token_for_jid(&self, jid: &Jid) -> Option<Vec<u8>> {
-        use wacore::iq::tctoken::is_tc_token_expired;
+        use wa_rs_core::iq::tctoken::is_tc_token_expired;
 
         let token_jid = if jid.is_lid() {
             jid.user.clone()

@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::Jid;
-use wacore_binary::node::Node;
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::Node;
 
 /// A LID mapping learned from usync response
 #[derive(Debug, Clone)]
@@ -134,7 +134,7 @@ pub fn parse_lid_mappings_from_response(resp_node: &Node) -> Vec<UsyncLidMapping
         };
 
         // Only extract mappings for phone number JIDs (not LID JIDs)
-        if user_jid.server != wacore_binary::jid::DEFAULT_USER_SERVER {
+        if user_jid.server != wa_rs_binary::jid::DEFAULT_USER_SERVER {
             continue;
         }
 
@@ -147,7 +147,7 @@ pub fn parse_lid_mappings_from_response(resp_node: &Node) -> Vec<UsyncLidMapping
             if !lid_val.is_empty() {
                 // Parse the LID JID to extract just the user part
                 if let Ok(lid_jid) = lid_val.parse::<Jid>()
-                    && lid_jid.server == wacore_binary::jid::HIDDEN_USER_SERVER
+                    && lid_jid.server == wa_rs_binary::jid::HIDDEN_USER_SERVER
                 {
                     mappings.push(UsyncLidMapping {
                         phone_number: user_jid.user.clone(),
@@ -164,7 +164,7 @@ pub fn parse_lid_mappings_from_response(resp_node: &Node) -> Vec<UsyncLidMapping
 #[cfg(test)]
 mod tests {
     use super::*;
-    use wacore_binary::builder::NodeBuilder;
+    use wa_rs_binary::builder::NodeBuilder;
 
     /// Helper to build a usync response node for testing.
     /// The structure matches actual server responses:

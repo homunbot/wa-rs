@@ -6,7 +6,7 @@ use iai_callgrind::{
     library_benchmark_group, main,
 };
 use std::hint::black_box;
-use wacore_libsignal::protocol::{
+use wa_rs_libsignal::protocol::{
     ChainKey, CiphertextMessage, Direction, GenericSignedPreKey, IdentityChange, IdentityKey,
     IdentityKeyPair, IdentityKeyStore, KeyPair, MessageKeyGenerator, PreKeyBundle, PreKeyId,
     PreKeyRecord, PreKeyStore, ProtocolAddress, RootKey, SenderKeyRecord, SenderKeyStore,
@@ -15,7 +15,7 @@ use wacore_libsignal::protocol::{
     group_decrypt, group_encrypt, message_decrypt, message_encrypt, process_prekey_bundle,
     process_sender_key_distribution_message,
 };
-use wacore_libsignal::store::sender_key_name::SenderKeyName;
+use wa_rs_libsignal::store::sender_key_name::SenderKeyName;
 
 struct InMemoryIdentityKeyStore {
     identity_key_pair: IdentityKeyPair,
@@ -37,11 +37,11 @@ impl InMemoryIdentityKeyStore {
 impl IdentityKeyStore for InMemoryIdentityKeyStore {
     async fn get_identity_key_pair(
         &self,
-    ) -> wacore_libsignal::protocol::error::Result<IdentityKeyPair> {
+    ) -> wa_rs_libsignal::protocol::error::Result<IdentityKeyPair> {
         Ok(self.identity_key_pair.clone())
     }
 
-    async fn get_local_registration_id(&self) -> wacore_libsignal::protocol::error::Result<u32> {
+    async fn get_local_registration_id(&self) -> wa_rs_libsignal::protocol::error::Result<u32> {
         Ok(self.registration_id)
     }
 
@@ -49,7 +49,7 @@ impl IdentityKeyStore for InMemoryIdentityKeyStore {
         &mut self,
         address: &ProtocolAddress,
         identity: &IdentityKey,
-    ) -> wacore_libsignal::protocol::error::Result<IdentityChange> {
+    ) -> wa_rs_libsignal::protocol::error::Result<IdentityChange> {
         let changed = self
             .identities
             .get(address)
@@ -63,14 +63,14 @@ impl IdentityKeyStore for InMemoryIdentityKeyStore {
         _address: &ProtocolAddress,
         _identity: &IdentityKey,
         _direction: Direction,
-    ) -> wacore_libsignal::protocol::error::Result<bool> {
+    ) -> wa_rs_libsignal::protocol::error::Result<bool> {
         Ok(true)
     }
 
     async fn get_identity(
         &self,
         address: &ProtocolAddress,
-    ) -> wacore_libsignal::protocol::error::Result<Option<IdentityKey>> {
+    ) -> wa_rs_libsignal::protocol::error::Result<Option<IdentityKey>> {
         Ok(self.identities.get(address).cloned())
     }
 }
@@ -92,18 +92,18 @@ impl PreKeyStore for InMemoryPreKeyStore {
     async fn get_pre_key(
         &self,
         prekey_id: PreKeyId,
-    ) -> wacore_libsignal::protocol::error::Result<PreKeyRecord> {
+    ) -> wa_rs_libsignal::protocol::error::Result<PreKeyRecord> {
         self.prekeys
             .get(&prekey_id)
             .cloned()
-            .ok_or(wacore_libsignal::protocol::SignalProtocolError::InvalidPreKeyId)
+            .ok_or(wa_rs_libsignal::protocol::SignalProtocolError::InvalidPreKeyId)
     }
 
     async fn save_pre_key(
         &mut self,
         prekey_id: PreKeyId,
         record: &PreKeyRecord,
-    ) -> wacore_libsignal::protocol::error::Result<()> {
+    ) -> wa_rs_libsignal::protocol::error::Result<()> {
         self.prekeys.insert(prekey_id, record.clone());
         Ok(())
     }
@@ -111,7 +111,7 @@ impl PreKeyStore for InMemoryPreKeyStore {
     async fn remove_pre_key(
         &mut self,
         prekey_id: PreKeyId,
-    ) -> wacore_libsignal::protocol::error::Result<()> {
+    ) -> wa_rs_libsignal::protocol::error::Result<()> {
         self.prekeys.remove(&prekey_id);
         Ok(())
     }
@@ -134,18 +134,18 @@ impl SignedPreKeyStore for InMemorySignedPreKeyStore {
     async fn get_signed_pre_key(
         &self,
         signed_prekey_id: SignedPreKeyId,
-    ) -> wacore_libsignal::protocol::error::Result<SignedPreKeyRecord> {
+    ) -> wa_rs_libsignal::protocol::error::Result<SignedPreKeyRecord> {
         self.signed_prekeys
             .get(&signed_prekey_id)
             .cloned()
-            .ok_or(wacore_libsignal::protocol::SignalProtocolError::InvalidSignedPreKeyId)
+            .ok_or(wa_rs_libsignal::protocol::SignalProtocolError::InvalidSignedPreKeyId)
     }
 
     async fn save_signed_pre_key(
         &mut self,
         signed_prekey_id: SignedPreKeyId,
         record: &SignedPreKeyRecord,
-    ) -> wacore_libsignal::protocol::error::Result<()> {
+    ) -> wa_rs_libsignal::protocol::error::Result<()> {
         self.signed_prekeys.insert(signed_prekey_id, record.clone());
         Ok(())
     }
@@ -168,7 +168,7 @@ impl SessionStore for InMemorySessionStore {
     async fn load_session(
         &self,
         address: &ProtocolAddress,
-    ) -> wacore_libsignal::protocol::error::Result<Option<SessionRecord>> {
+    ) -> wa_rs_libsignal::protocol::error::Result<Option<SessionRecord>> {
         Ok(self.sessions.get(address).cloned())
     }
 
@@ -176,7 +176,7 @@ impl SessionStore for InMemorySessionStore {
         &mut self,
         address: &ProtocolAddress,
         record: &SessionRecord,
-    ) -> wacore_libsignal::protocol::error::Result<()> {
+    ) -> wa_rs_libsignal::protocol::error::Result<()> {
         self.sessions.insert(address.clone(), record.clone());
         Ok(())
     }
@@ -200,7 +200,7 @@ impl SenderKeyStore for InMemorySenderKeyStore {
         &mut self,
         sender_key_name: &SenderKeyName,
         record: &SenderKeyRecord,
-    ) -> wacore_libsignal::protocol::error::Result<()> {
+    ) -> wa_rs_libsignal::protocol::error::Result<()> {
         self.sender_keys
             .insert(sender_key_name.clone(), record.clone());
         Ok(())
@@ -209,7 +209,7 @@ impl SenderKeyStore for InMemorySenderKeyStore {
     async fn load_sender_key(
         &mut self,
         sender_key_name: &SenderKeyName,
-    ) -> wacore_libsignal::protocol::error::Result<Option<SenderKeyRecord>> {
+    ) -> wa_rs_libsignal::protocol::error::Result<Option<SenderKeyRecord>> {
         Ok(self.sender_keys.get(sender_key_name).cloned())
     }
 }
@@ -361,7 +361,7 @@ fn setup_established_dm_session() -> (User, User) {
         .expect("encryption");
 
         let ct_msg = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(ct.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(ct.serialize()).unwrap(),
         );
         let mut rng = rand::rng();
         message_decrypt(
@@ -469,7 +469,7 @@ fn bench_dm_decrypt_first_message(data: (User, User, Vec<u8>)) {
 
     let plaintext = futures::executor::block_on(async {
         let ciphertext = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(ciphertext_bytes.as_slice())
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(ciphertext_bytes.as_slice())
                 .unwrap(),
         );
         message_decrypt(
@@ -620,7 +620,7 @@ fn bench_full_dm_conversation(data: (User, User)) {
         .expect("encrypt1");
 
         let ct1 = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(msg1.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(msg1.serialize()).unwrap(),
         );
         let _ = message_decrypt(
             &ct1,
@@ -645,7 +645,7 @@ fn bench_full_dm_conversation(data: (User, User)) {
         .expect("encrypt2");
 
         let ct2 = CiphertextMessage::SignalMessage(
-            wacore_libsignal::protocol::SignalMessage::try_from(msg2.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::SignalMessage::try_from(msg2.serialize()).unwrap(),
         );
         let _ = message_decrypt(
             &ct2,
@@ -670,7 +670,7 @@ fn bench_full_dm_conversation(data: (User, User)) {
         .expect("encrypt3");
 
         let ct3 = CiphertextMessage::SignalMessage(
-            wacore_libsignal::protocol::SignalMessage::try_from(msg3.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::SignalMessage::try_from(msg3.serialize()).unwrap(),
         );
         let _ = message_decrypt(
             &ct3,
@@ -779,7 +779,7 @@ fn setup_with_archived_sessions() -> (User, User, Vec<Vec<u8>>) {
 
         // Bob processes Alice's first message to establish his side
         let ct = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(
                 old_ciphertexts[0].as_slice(),
             )
             .unwrap(),
@@ -835,7 +835,7 @@ fn setup_with_archived_sessions() -> (User, User, Vec<Vec<u8>>) {
             .expect("encrypt");
 
             let ct = CiphertextMessage::PreKeySignalMessage(
-                wacore_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
+                wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
             );
             message_decrypt(
                 &ct,
@@ -880,7 +880,7 @@ fn bench_decrypt_with_previous_session(data: (User, User, Vec<Vec<u8>>)) {
         for ciphertext in ciphertexts.iter().take(5) {
             // Try to parse as SignalMessage (non-PreKey)
             if let Ok(signal_msg) =
-                wacore_libsignal::protocol::SignalMessage::try_from(ciphertext.as_slice())
+                wa_rs_libsignal::protocol::SignalMessage::try_from(ciphertext.as_slice())
             {
                 let ct = CiphertextMessage::SignalMessage(signal_msg);
                 let result = message_decrypt(
@@ -920,7 +920,7 @@ fn setup_out_of_order_messages() -> (User, User, Vec<Vec<u8>>) {
         .expect("encrypt");
 
         let ct = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
         );
         message_decrypt(
             &ct,
@@ -946,7 +946,7 @@ fn setup_out_of_order_messages() -> (User, User, Vec<Vec<u8>>) {
         .expect("encrypt reply");
 
         let ct_reply = CiphertextMessage::SignalMessage(
-            wacore_libsignal::protocol::SignalMessage::try_from(reply.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::SignalMessage::try_from(reply.serialize()).unwrap(),
         );
         message_decrypt(
             &ct_reply,
@@ -991,7 +991,7 @@ fn bench_out_of_order_decryption(data: (User, User, Vec<Vec<u8>>)) {
         // Decrypt messages in reverse order (worst case for message key storage)
         for ciphertext in messages.iter().rev() {
             let signal_msg =
-                wacore_libsignal::protocol::SignalMessage::try_from(ciphertext.as_slice())
+                wa_rs_libsignal::protocol::SignalMessage::try_from(ciphertext.as_slice())
                     .expect("parse");
             let ct = CiphertextMessage::SignalMessage(signal_msg);
             let result = message_decrypt(
@@ -1044,7 +1044,7 @@ fn setup_promote_matching_session() -> (User, User, Vec<u8>) {
         .expect("encrypt");
 
         let ct = CiphertextMessage::PreKeySignalMessage(
-            wacore_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
+            wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
         );
         message_decrypt(
             &ct,
@@ -1094,7 +1094,7 @@ fn setup_promote_matching_session() -> (User, User, Vec<u8>) {
             .expect("encrypt");
 
             let ct = CiphertextMessage::PreKeySignalMessage(
-                wacore_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
+                wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(msg.serialize()).unwrap(),
             );
             message_decrypt(
                 &ct,
@@ -1139,7 +1139,7 @@ fn bench_promote_matching_session(data: (User, User, Vec<u8>)) {
         // Process multiple PreKey messages to exercise promote_matching_session
         for _ in 0..5 {
             let ct = CiphertextMessage::PreKeySignalMessage(
-                wacore_libsignal::protocol::PreKeySignalMessage::try_from(
+                wa_rs_libsignal::protocol::PreKeySignalMessage::try_from(
                     prekey_message.as_slice(),
                 )
                 .unwrap(),
@@ -1173,7 +1173,7 @@ fn create_test_message_key_generator(counter: u32) -> MessageKeyGenerator {
 /// Helper function to create a minimal valid SessionState for testing.
 fn create_test_session_state(
     version: u8,
-    base_key: &wacore_libsignal::protocol::PublicKey,
+    base_key: &wa_rs_libsignal::protocol::PublicKey,
 ) -> SessionState {
     let mut csprng = rand::rng();
     let identity_keypair = KeyPair::generate(&mut csprng);
@@ -1193,7 +1193,7 @@ fn create_test_session_state(
 
 /// Setup for message key eviction benchmark.
 /// Creates a session with a receiver chain pre-filled near capacity.
-fn setup_message_key_eviction() -> (SessionState, wacore_libsignal::protocol::PublicKey) {
+fn setup_message_key_eviction() -> (SessionState, wa_rs_libsignal::protocol::PublicKey) {
     let mut csprng = rand::rng();
     let base_key = KeyPair::generate(&mut csprng).public_key;
     let mut state = create_test_session_state(3, &base_key);
@@ -1219,7 +1219,7 @@ fn setup_message_key_eviction() -> (SessionState, wacore_libsignal::protocol::Pu
 // We insert 200 keys beyond MAX_MESSAGE_KEYS to measure multiple eviction cycles.
 #[library_benchmark]
 #[bench::eviction(setup = setup_message_key_eviction)]
-fn bench_message_key_eviction(data: (SessionState, wacore_libsignal::protocol::PublicKey)) {
+fn bench_message_key_eviction(data: (SessionState, wa_rs_libsignal::protocol::PublicKey)) {
     let (mut state, sender_key) = data;
     let start_counter = (consts::MAX_MESSAGE_KEYS - 1) as u32;
 

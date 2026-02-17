@@ -5,18 +5,18 @@ use anyhow::{Result, anyhow};
 use async_trait::async_trait;
 use prost::Message;
 use tokio::sync::Mutex;
-use wacore::appstate::hash::HashState;
-use wacore::appstate::keys::ExpandedAppStateKeys;
-use wacore::appstate::patch_decode::{PatchList, WAPatchName, parse_patch_list};
-use wacore::appstate::{
+use wa_rs_core::appstate::hash::HashState;
+use wa_rs_core::appstate::keys::ExpandedAppStateKeys;
+use wa_rs_core::appstate::patch_decode::{PatchList, WAPatchName, parse_patch_list};
+use wa_rs_core::appstate::{
     collect_key_ids_from_patch_list, expand_app_state_keys, process_patch, process_snapshot,
 };
-use wacore::store::traits::Backend;
-use wacore_binary::node::Node;
-use waproto::whatsapp as wa;
+use wa_rs_core::store::traits::Backend;
+use wa_rs_binary::node::Node;
+use wa_rs_proto::whatsapp as wa;
 
-// Re-export Mutation from wacore for backwards compatibility
-pub use wacore::appstate::Mutation;
+// Re-export Mutation from wa_rs_core for backwards compatibility
+pub use wa_rs_core::appstate::Mutation;
 
 #[derive(Clone)]
 pub struct AppStateProcessor {
@@ -139,7 +139,7 @@ impl AppStateProcessor {
             let result = tokio::task::spawn_blocking(move || {
                 let get_keys = |key_id: &[u8]| -> Result<
                     ExpandedAppStateKeys,
-                    wacore::appstate::AppStateError,
+                    wa_rs_core::appstate::AppStateError,
                 > {
                     use base64::Engine;
                     use base64::engine::general_purpose::STANDARD_NO_PAD;
@@ -147,7 +147,7 @@ impl AppStateProcessor {
                     keys_map
                         .get(&id_b64)
                         .cloned()
-                        .ok_or(wacore::appstate::AppStateError::KeyNotFound)
+                        .ok_or(wa_rs_core::appstate::AppStateError::KeyNotFound)
                 };
 
                 let mut snapshot_state = HashState::default();
@@ -158,7 +158,7 @@ impl AppStateProcessor {
                     validate_macs,
                     &collection_name_owned,
                 )?;
-                Ok::<_, wacore::appstate::AppStateError>((result, snapshot_state))
+                Ok::<_, wa_rs_core::appstate::AppStateError>((result, snapshot_state))
             })
             .await
             .map_err(|e| anyhow!("Blocking task failed: {}", e))?
@@ -225,19 +225,19 @@ impl AppStateProcessor {
             let result = tokio::task::spawn_blocking(move || {
                 let get_keys = |key_id: &[u8]| -> Result<
                     ExpandedAppStateKeys,
-                    wacore::appstate::AppStateError,
+                    wa_rs_core::appstate::AppStateError,
                 > {
                     use base64::Engine;
                     use base64::engine::general_purpose::STANDARD_NO_PAD;
                     let id_b64 = STANDARD_NO_PAD.encode(key_id);
                     keys.get(&id_b64)
                         .cloned()
-                        .ok_or(wacore::appstate::AppStateError::KeyNotFound)
+                        .ok_or(wa_rs_core::appstate::AppStateError::KeyNotFound)
                 };
 
                 let get_prev_value_mac = |index_mac: &[u8]| -> Result<
                     Option<Vec<u8>>,
-                    wacore::appstate::AppStateError,
+                    wa_rs_core::appstate::AppStateError,
                 > { Ok(db_prev.get(index_mac).cloned()) };
 
                 let mut state = state_clone;
@@ -333,18 +333,18 @@ mod tests {
     use super::*;
     use prost::Message;
     use std::collections::HashMap;
-    use wacore::appstate::WAPATCH_INTEGRITY;
-    use wacore::appstate::hash::HashState;
-    use wacore::appstate::hash::generate_content_mac;
-    use wacore::appstate::keys::expand_app_state_keys;
-    use wacore::appstate::processor::AppStateMutationMAC;
-    use wacore::libsignal::crypto::aes_256_cbc_encrypt_into;
-    use wacore::store::error::Result as StoreResult;
-    use wacore::store::traits::{
+    use wa_rs_core::appstate::WAPATCH_INTEGRITY;
+    use wa_rs_core::appstate::hash::HashState;
+    use wa_rs_core::appstate::hash::generate_content_mac;
+    use wa_rs_core::appstate::keys::expand_app_state_keys;
+    use wa_rs_core::appstate::processor::AppStateMutationMAC;
+    use wa_rs_core::libsignal::crypto::aes_256_cbc_encrypt_into;
+    use wa_rs_core::store::error::Result as StoreResult;
+    use wa_rs_core::store::traits::{
         AppStateSyncKey, AppSyncStore, DeviceListRecord, DeviceStore, LidPnMappingEntry,
         ProtocolStore, SignalStore,
     };
-    use wacore_binary::jid::Jid;
+    use wa_rs_binary::jid::Jid;
 
     type MockMacMap = Arc<Mutex<HashMap<(String, Vec<u8>), Vec<u8>>>>;
 
@@ -508,13 +508,13 @@ mod tests {
         async fn get_tc_token(
             &self,
             _: &str,
-        ) -> StoreResult<Option<wacore::store::traits::TcTokenEntry>> {
+        ) -> StoreResult<Option<wa_rs_core::store::traits::TcTokenEntry>> {
             Ok(None)
         }
         async fn put_tc_token(
             &self,
             _: &str,
-            _: &wacore::store::traits::TcTokenEntry,
+            _: &wa_rs_core::store::traits::TcTokenEntry,
         ) -> StoreResult<()> {
             Ok(())
         }
@@ -532,11 +532,11 @@ mod tests {
     // Implement DeviceStore - Device persistence
     #[async_trait]
     impl DeviceStore for MockBackend {
-        async fn save(&self, _: &wacore::store::Device) -> StoreResult<()> {
+        async fn save(&self, _: &wa_rs_core::store::Device) -> StoreResult<()> {
             Ok(())
         }
-        async fn load(&self) -> StoreResult<Option<wacore::store::Device>> {
-            Ok(Some(wacore::store::Device::new()))
+        async fn load(&self) -> StoreResult<Option<wa_rs_core::store::Device>> {
+            Ok(Some(wa_rs_core::store::Device::new()))
         }
         async fn exists(&self) -> StoreResult<bool> {
             Ok(true)
@@ -550,7 +550,7 @@ mod tests {
         op: wa::syncd_mutation::SyncdOperation,
         index_mac: &[u8],
         plaintext: &[u8],
-        keys: &wacore::appstate::keys::ExpandedAppStateKeys,
+        keys: &wa_rs_core::appstate::keys::ExpandedAppStateKeys,
         key_id_bytes: &[u8],
     ) -> wa::SyncdMutation {
         let iv = vec![0u8; 16];

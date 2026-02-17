@@ -1,12 +1,12 @@
 //! User device list synchronization.
 //!
-//! Device list IQ specification is defined in `wacore::iq::usync`.
+//! Device list IQ specification is defined in `wa_rs_core::iq::usync`.
 
 use crate::client::Client;
 use log::{debug, warn};
 use std::collections::HashSet;
-use wacore::iq::usync::DeviceListSpec;
-use wacore_binary::jid::Jid;
+use wa_rs_core::iq::usync::DeviceListSpec;
+use wa_rs_binary::jid::Jid;
 
 impl Client {
     pub(crate) async fn get_user_devices(&self, jids: &[Jid]) -> Result<Vec<Jid>, anyhow::Error> {
@@ -80,12 +80,12 @@ impl Client {
                     })
                     .unwrap_or_default();
 
-                let device_list = wacore::store::traits::DeviceListRecord {
+                let device_list = wa_rs_core::store::traits::DeviceListRecord {
                     user: user_list.user.user.clone(),
                     devices: user_list
                         .devices
                         .iter()
-                        .map(|d| wacore::store::traits::DeviceInfo {
+                        .map(|d| wa_rs_core::store::traits::DeviceInfo {
                             device_id: d.device as u32,
                             // Preserve existing key_index if we have it
                             key_index: existing_key_indices

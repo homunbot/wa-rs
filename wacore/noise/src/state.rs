@@ -22,7 +22,7 @@ pub fn generate_iv(counter: u32) -> [u8; 12] {
 /// # Example
 ///
 /// ```ignore
-/// use wacore_noise::NoiseCipher;
+/// use wa_rs_noise::NoiseCipher;
 ///
 /// // After handshake, you get read/write ciphers
 /// let mut counter = 0u32;
@@ -122,7 +122,7 @@ pub struct NoiseKeys {
 /// # Example
 ///
 /// ```ignore
-/// use wacore_noise::{NoiseState, generate_iv};
+/// use wa_rs_noise::{NoiseState, generate_iv};
 ///
 /// // Initialize with pattern and prologue
 /// let mut noise = NoiseState::new(b"Noise_XX_25519_AESGCM_SHA256\0\0\0\0", &prologue)?;

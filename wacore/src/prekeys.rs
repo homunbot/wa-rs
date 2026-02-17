@@ -1,9 +1,9 @@
 use crate::libsignal::protocol::{IdentityKey, PreKeyBundle, PreKeyId, PublicKey, SignedPreKeyId};
 use crate::xml::DisplayableNode;
 use std::collections::HashMap;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::Jid;
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::{Node, NodeContent};
 
 pub struct PreKeyUtils;
 
@@ -88,8 +88,8 @@ impl PreKeyUtils {
             let mut attrs = user_node.attrs();
             let mut jid = attrs.jid("jid").normalize_for_prekey_bundle();
             if jid.device == 0
-                && (jid.server == wacore_binary::jid::DEFAULT_USER_SERVER
-                    || jid.server == wacore_binary::jid::HIDDEN_USER_SERVER)
+                && (jid.server == wa_rs_binary::jid::DEFAULT_USER_SERVER
+                    || jid.server == wa_rs_binary::jid::HIDDEN_USER_SERVER)
                 && let Some((user_base, device_str)) = jid.user.split_once(':')
                 && let Ok(device) = device_str.parse::<u16>()
             {
@@ -260,7 +260,7 @@ mod tests {
     use crate::libsignal::protocol::{IdentityKeyPair, KeyPair};
     use crate::protocol::ProtocolNode;
     use rand::TryRngCore;
-    use wacore_binary::node::NodeValue;
+    use wa_rs_binary::node::NodeValue;
 
     fn create_mock_bundle(device_id: u32) -> PreKeyBundle {
         let mut rng = rand::rngs::OsRng.unwrap_err();

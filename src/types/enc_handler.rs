@@ -2,7 +2,7 @@ use crate::client::Client;
 use crate::types::message::MessageInfo;
 use anyhow::Result;
 use std::sync::Arc;
-use wacore_binary::node::Node;
+use wa_rs_binary::node::Node;
 
 /// Trait for handling custom encrypted message types
 #[async_trait::async_trait]
@@ -27,7 +27,7 @@ mod tests {
     use anyhow::Result;
     use std::sync::Arc;
     use tokio::sync::Mutex;
-    use wacore_binary::node::Node;
+    use wa_rs_binary::node::Node;
 
     /// Mock handler for testing custom enc types
     #[derive(Debug)]
@@ -71,8 +71,8 @@ mod tests {
         // Build bot with custom handler and in-memory DB
         let backend = crate::test_utils::create_test_backend().await;
 
-        let transport = whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory::new();
-        let http_client = whatsapp_rust_ureq_http_client::UreqHttpClient::new();
+        let transport = wa_rs_tokio_transport::TokioWebSocketTransportFactory::new();
+        let http_client = wa_rs_ureq_http::UreqHttpClient::new();
         let bot = Bot::builder()
             .with_backend(backend)
             .with_transport_factory(transport)
@@ -96,8 +96,8 @@ mod tests {
         // Build bot with in-memory DB
         let backend = crate::test_utils::create_test_backend().await;
 
-        let transport = whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory::new();
-        let http_client = whatsapp_rust_ureq_http_client::UreqHttpClient::new();
+        let transport = wa_rs_tokio_transport::TokioWebSocketTransportFactory::new();
+        let http_client = wa_rs_ureq_http::UreqHttpClient::new();
         let bot = Bot::builder()
             .with_backend(backend)
             .with_transport_factory(transport)
@@ -121,8 +121,8 @@ mod tests {
         // Build bot without custom handlers but with in-memory DB
         let backend = crate::test_utils::create_test_backend().await;
 
-        let transport = whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory::new();
-        let http_client = whatsapp_rust_ureq_http_client::UreqHttpClient::new();
+        let transport = wa_rs_tokio_transport::TokioWebSocketTransportFactory::new();
+        let http_client = wa_rs_ureq_http::UreqHttpClient::new();
         let bot = Bot::builder()
             .with_backend(backend)
             .with_transport_factory(transport)

@@ -1,9 +1,9 @@
 //! Spam report types and node building.
 
 use crate::StringEnum;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::Jid;
-use wacore_binary::node::Node;
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::Node;
 
 /// The type of spam flow indicating the source of the report.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, StringEnum)]

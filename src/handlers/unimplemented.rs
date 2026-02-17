@@ -2,7 +2,7 @@ use super::traits::StanzaHandler;
 use crate::client::Client;
 use async_trait::async_trait;
 use std::sync::Arc;
-use wacore_binary::node::Node;
+use wa_rs_binary::node::Node;
 
 /// Handler for stanza types that are not yet fully implemented.
 ///

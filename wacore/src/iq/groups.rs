@@ -5,9 +5,9 @@ use crate::protocol::ProtocolNode;
 use crate::request::InfoQuery;
 use anyhow::{Result, anyhow};
 use typed_builder::TypedBuilder;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{GROUP_SERVER, Jid};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{GROUP_SERVER, Jid};
+use wa_rs_binary::node::{Node, NodeContent};
 
 // Re-export AddressingMode from types::message for convenience
 pub use crate::types::message::AddressingMode;

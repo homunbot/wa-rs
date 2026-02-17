@@ -1,6 +1,6 @@
 use std::str::FromStr;
-use wacore_binary::jid::{Jid, JidExt};
-use waproto::whatsapp as wa;
+use wa_rs_binary::jid::{Jid, JidExt};
+use wa_rs_proto::whatsapp as wa;
 
 /// Invokes a callback macro with the list of all message types that have `context_info`.
 ///
@@ -105,7 +105,7 @@ pub trait MessageExt {
     /// # Example
     ///
     /// ```ignore
-    /// use wacore::proto_helpers::MessageExt;
+    /// use wa_rs_core::proto_helpers::MessageExt;
     ///
     /// let context_info = wa::ContextInfo {
     ///     stanza_id: Some(message_id.clone()),
@@ -123,7 +123,7 @@ pub trait MessageExt {
     /// # Example
     ///
     /// ```ignore
-    /// use wacore::proto_helpers::MessageExt;
+    /// use wa_rs_core::proto_helpers::MessageExt;
     ///
     /// let mut reply = wa::Message {
     ///     image_message: Some(Box::new(wa::message::ImageMessage {
@@ -313,7 +313,7 @@ pub(crate) fn strip_nested_context_info(msg: &mut wa::Message) {
 /// # Example
 ///
 /// ```ignore
-/// use wacore::proto_helpers::{build_quote_context, MessageExt};
+/// use wa_rs_core::proto_helpers::{build_quote_context, MessageExt};
 ///
 /// let context = build_quote_context(
 ///     "3EB0123456789",
@@ -360,7 +360,7 @@ pub fn build_quote_context(
 /// # Example
 ///
 /// ```ignore
-/// use wacore::proto_helpers::{build_quote_context_with_info, MessageExt};
+/// use wa_rs_core::proto_helpers::{build_quote_context_with_info, MessageExt};
 ///
 /// let context = build_quote_context_with_info(
 ///     "3EB0123456789",

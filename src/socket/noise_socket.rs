@@ -4,7 +4,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU32, Ordering};
 use tokio::sync::{mpsc, oneshot};
 use tokio::task::JoinHandle;
-use wacore::handshake::NoiseCipher;
+use wa_rs_core::handshake::NoiseCipher;
 
 const INLINE_ENCRYPT_THRESHOLD: usize = 16 * 1024;
 
@@ -119,7 +119,7 @@ impl NoiseSocket {
             let ciphertext_len = out_buf.len();
             plaintext_buf.extend_from_slice(&out_buf);
             out_buf.clear();
-            if let Err(e) = wacore::framing::encode_frame_into(
+            if let Err(e) = wa_rs_core::framing::encode_frame_into(
                 &plaintext_buf[..ciphertext_len],
                 None,
                 &mut out_buf,
@@ -158,7 +158,7 @@ impl NoiseSocket {
 
             plaintext_buf.clear();
             out_buf.clear();
-            if let Err(e) = wacore::framing::encode_frame_into(&ciphertext, None, &mut out_buf) {
+            if let Err(e) = wa_rs_core::framing::encode_frame_into(&ciphertext, None, &mut out_buf) {
                 return Err(EncryptSendError::framing(e, plaintext_buf, out_buf));
             }
         }

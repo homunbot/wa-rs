@@ -9,8 +9,8 @@
 //! - Cache recent messages for retry handling
 
 use anyhow::Result;
-use wacore_binary::jid::Jid;
-use waproto::whatsapp as wa;
+use wa_rs_binary::jid::Jid;
+use wa_rs_proto::whatsapp as wa;
 
 use super::Client;
 

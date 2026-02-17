@@ -2,15 +2,15 @@ use crate::store::Device;
 use async_trait::async_trait;
 use std::sync::Arc;
 use tokio::sync::Mutex;
-use wacore::libsignal::protocol::error::Result as SignalResult;
-use wacore::libsignal::protocol::{
+use wa_rs_core::libsignal::protocol::error::Result as SignalResult;
+use wa_rs_core::libsignal::protocol::{
     Direction, IdentityChange, IdentityKey, IdentityKeyPair, IdentityKeyStore, PrivateKey,
     ProtocolAddress, PublicKey, SenderKeyRecord, SenderKeyStore, SessionRecord,
     SignalProtocolError,
 };
-use wacore::libsignal::store::sender_key_name::SenderKeyName;
-use wacore::libsignal::store::*;
-use waproto::whatsapp::{PreKeyRecordStructure, SignedPreKeyRecordStructure};
+use wa_rs_core::libsignal::store::sender_key_name::SenderKeyName;
+use wa_rs_core::libsignal::store::*;
+use wa_rs_proto::whatsapp::{PreKeyRecordStructure, SignedPreKeyRecordStructure};
 
 type StoreError = Box<dyn std::error::Error + Send + Sync>;
 
@@ -266,8 +266,8 @@ impl PreKeyStore for Device {
         prekey_id: u32,
     ) -> Result<Option<PreKeyRecordStructure>, StoreError> {
         use prost::Message;
-        use wacore::libsignal::protocol::KeyPair;
-        use wacore::libsignal::store::record_helpers::new_pre_key_record;
+        use wa_rs_core::libsignal::protocol::KeyPair;
+        use wa_rs_core::libsignal::store::record_helpers::new_pre_key_record;
 
         match self.backend.load_prekey(prekey_id).await {
             Ok(Some(bytes)) => {
@@ -330,7 +330,7 @@ impl SignedPreKeyStore for Device {
         signed_prekey_id: u32,
     ) -> Result<Option<SignedPreKeyRecordStructure>, StoreError> {
         if signed_prekey_id == self.signed_pre_key_id {
-            let record = wacore::libsignal::store::record_helpers::new_signed_pre_key_record(
+            let record = wa_rs_core::libsignal::store::record_helpers::new_signed_pre_key_record(
                 self.signed_pre_key_id,
                 &self.signed_pre_key,
                 self.signed_pre_key_signature,

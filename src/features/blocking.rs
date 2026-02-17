@@ -1,14 +1,14 @@
 //! Blocking feature for managing blocked contacts.
 //!
 //! This module provides high-level APIs for blocking and unblocking contacts.
-//! Protocol-level types are defined in `wacore::iq::blocklist`.
+//! Protocol-level types are defined in `wa_rs_core::iq::blocklist`.
 
 use crate::client::Client;
 use crate::request::IqError;
 use log::debug;
-pub use wacore::iq::blocklist::BlocklistEntry;
-use wacore::iq::blocklist::{GetBlocklistSpec, UpdateBlocklistSpec};
-use wacore_binary::jid::Jid;
+pub use wa_rs_core::iq::blocklist::BlocklistEntry;
+use wa_rs_core::iq::blocklist::{GetBlocklistSpec, UpdateBlocklistSpec};
+use wa_rs_binary::jid::Jid;
 
 /// Feature handle for blocklist operations.
 pub struct Blocking<'a> {

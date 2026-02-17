@@ -7,9 +7,9 @@ use prost::Message;
 use serde::Serialize;
 use std::fmt;
 use std::sync::{Arc, OnceLock, RwLock};
-use wacore_binary::jid::{Jid, MessageId};
-use wacore_binary::node::Node;
-use waproto::whatsapp::{self as wa, HistorySync};
+use wa_rs_binary::jid::{Jid, MessageId};
+use wa_rs_binary::node::Node;
+use wa_rs_proto::whatsapp::{self as wa, HistorySync};
 
 /// Wrapper for large event data that uses Arc for cheap cloning.
 /// This avoids cloning large protobuf messages when dispatching events.

@@ -4,7 +4,7 @@ pub mod sender_key_name;
 use crate::protocol::{IdentityKeyStore, ProtocolAddress, SessionRecord};
 use async_trait::async_trait;
 use std::error::Error;
-use waproto::whatsapp::{PreKeyRecordStructure, SignedPreKeyRecordStructure};
+use wa_rs_proto::whatsapp::{PreKeyRecordStructure, SignedPreKeyRecordStructure};
 
 type StoreError = Box<dyn Error + Send + Sync>;
 

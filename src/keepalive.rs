@@ -5,7 +5,7 @@ use rand::Rng;
 use std::sync::Arc;
 use std::sync::atomic::Ordering;
 use std::time::Duration;
-use wacore::iq::keepalive::KeepaliveSpec;
+use wa_rs_core::iq::keepalive::KeepaliveSpec;
 
 const KEEP_ALIVE_INTERVAL_MIN: Duration = Duration::from_secs(20);
 const KEEP_ALIVE_INTERVAL_MAX: Duration = Duration::from_secs(30);

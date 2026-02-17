@@ -5,7 +5,7 @@ use anyhow::{Result, anyhow};
 use log::debug;
 use std::sync::Arc;
 
-pub use wacore::version::parse_sw_js;
+pub use wa_rs_core::version::parse_sw_js;
 
 const SW_URL: &str = "https://web.whatsapp.com/sw.js";
 

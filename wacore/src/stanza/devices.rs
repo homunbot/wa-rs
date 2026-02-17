@@ -15,9 +15,9 @@ use crate::iq::node::{optional_attr, optional_child, required_attr, required_chi
 use crate::protocol::ProtocolNode;
 use anyhow::{Result, anyhow};
 use serde::Serialize;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::Jid;
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
+use wa_rs_binary::node::{Node, NodeContent};
 
 /// Device notification operation type.
 ///
@@ -376,7 +376,7 @@ impl DeviceNotification {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use wacore_binary::builder::NodeBuilder;
+    use wa_rs_binary::builder::NodeBuilder;
 
     #[test]
     fn test_device_notification_type_as_str() {

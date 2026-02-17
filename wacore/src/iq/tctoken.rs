@@ -41,9 +41,9 @@
 use crate::iq::node::{optional_attr, required_attr, required_child};
 use crate::iq::spec::IqSpec;
 use crate::request::InfoQuery;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::{Node, NodeContent};
 
 /// IQ namespace for privacy tokens (shared with privacy settings).
 pub const PRIVACY_NAMESPACE: &str = "privacy";

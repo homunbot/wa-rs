@@ -10,7 +10,7 @@
 
 use std::collections::{HashMap, HashSet};
 use tokio::sync::{Mutex, oneshot};
-use wacore_binary::jid::Jid;
+use wa_rs_binary::jid::Jid;
 
 /// Maximum number of JIDs to include in a single prekey fetch request.
 /// Matches WhatsApp Web's SESSION_CHECK_BATCH constant.

@@ -1,8 +1,8 @@
 use crate::types::events::{Event, LazyConversation};
 use bytes::Bytes;
 use std::sync::Arc;
-use wacore::history_sync::process_history_sync;
-use waproto::whatsapp::message::HistorySyncNotification;
+use wa_rs_core::history_sync::process_history_sync;
+use wa_rs_proto::whatsapp::message::HistorySyncNotification;
 
 use crate::client::Client;
 

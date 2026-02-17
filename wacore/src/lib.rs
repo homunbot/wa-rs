@@ -1,21 +1,21 @@
-extern crate self as wacore;
+extern crate self as wa_rs_core;
 
 pub use aes_gcm;
-pub use wacore_appstate as appstate;
-pub use wacore_noise as noise;
+pub use wa_rs_appstate as appstate;
+pub use wa_rs_noise as noise;
 
 // Re-export derive macros
-pub use wacore_derive::{EmptyNode, ProtocolNode, StringEnum};
+pub use wa_rs_derive::{EmptyNode, ProtocolNode, StringEnum};
 
 pub mod client;
 pub mod download;
 pub mod iq;
 pub mod protocol;
-pub use wacore_noise::framing;
+pub use wa_rs_noise::framing;
 pub mod handshake;
 pub mod history_sync;
 pub mod ib;
-pub use wacore_libsignal as libsignal;
+pub use wa_rs_libsignal as libsignal;
 pub mod messages;
 pub mod net;
 pub mod pair;

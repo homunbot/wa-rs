@@ -47,9 +47,9 @@ use crate::request::InfoQuery;
 use anyhow::anyhow;
 use log::warn;
 use std::collections::HashMap;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::{Node, NodeContent};
 
 /// Usync mode.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
@@ -465,7 +465,7 @@ impl IqSpec for UserInfoSpec {
     }
 }
 
-// Re-export types from wacore::usync for convenience
+// Re-export types from wa_rs_core::usync for convenience
 pub use crate::usync::{UserDeviceList, UsyncLidMapping};
 
 /// Response from device list query containing device lists and any LID mappings.
@@ -575,13 +575,13 @@ impl IqSpec for DeviceListSpec {
                 .ok_or_else(|| anyhow!("user node missing required 'jid' attribute"))?;
 
             // Extract LID mapping if present
-            if user_jid.server == wacore_binary::jid::DEFAULT_USER_SERVER
+            if user_jid.server == wa_rs_binary::jid::DEFAULT_USER_SERVER
                 && let Some(lid_node) = user_node.get_optional_child("lid")
             {
                 let lid_val = lid_node.attrs().optional_string("val").unwrap_or_default();
                 if !lid_val.is_empty()
                     && let Ok(lid_jid) = lid_val.parse::<Jid>()
-                    && lid_jid.server == wacore_binary::jid::HIDDEN_USER_SERVER
+                    && lid_jid.server == wa_rs_binary::jid::HIDDEN_USER_SERVER
                 {
                     lid_mappings.push(UsyncLidMapping {
                         phone_number: user_jid.user.clone(),

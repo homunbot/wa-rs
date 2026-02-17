@@ -5,10 +5,10 @@ use prost::Message;
 use std::sync::Arc;
 use thiserror::Error;
 use tokio::time::{Duration, timeout};
-use wacore::handshake::{
+use wa_rs_core::handshake::{
     HandshakeError as CoreHandshakeError, HandshakeState, build_handshake_header,
 };
-use wacore_binary::consts::{NOISE_START_PATTERN, WA_CONN_HEADER};
+use wa_rs_binary::consts::{NOISE_START_PATTERN, WA_CONN_HEADER};
 
 const NOISE_HANDSHAKE_RESPONSE_TIMEOUT: Duration = Duration::from_secs(20);
 
@@ -40,7 +40,7 @@ pub async fn do_handshake(
         NOISE_START_PATTERN,
         &WA_CONN_HEADER,
     )?;
-    let mut frame_decoder = wacore::framing::FrameDecoder::new();
+    let mut frame_decoder = wa_rs_core::framing::FrameDecoder::new();
 
     debug!("--> Sending ClientHello");
     let client_hello_bytes = handshake_state.build_client_hello()?;
@@ -55,7 +55,7 @@ pub async fn do_handshake(
     }
 
     // First message includes the WA connection header (with optional edge routing)
-    let framed = wacore::framing::encode_frame(&client_hello_bytes, Some(&header))
+    let framed = wa_rs_core::framing::encode_frame(&client_hello_bytes, Some(&header))
         .map_err(HandshakeError::Transport)?;
     transport.send(framed).await?;
 
@@ -93,7 +93,7 @@ pub async fn do_handshake(
 
     debug!("--> Sending ClientFinish");
     // Subsequent messages don't need the header
-    let framed = wacore::framing::encode_frame(&client_finish_bytes, None)
+    let framed = wa_rs_core::framing::encode_frame(&client_finish_bytes, None)
         .map_err(HandshakeError::Transport)?;
     transport.send(framed).await?;
 

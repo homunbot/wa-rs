@@ -1,16 +1,16 @@
 use crate::client::Client;
 use std::collections::HashMap;
-use wacore::client::context::GroupInfo;
-use wacore::iq::groups::{
+use wa_rs_core::client::context::GroupInfo;
+use wa_rs_core::iq::groups::{
     AddParticipantsIq, DemoteParticipantsIq, GetGroupInviteLinkIq, GroupCreateIq,
     GroupParticipantResponse, GroupParticipatingIq, GroupQueryIq, LeaveGroupIq,
     PromoteParticipantsIq, RemoveParticipantsIq, SetGroupDescriptionIq, SetGroupSubjectIq,
     normalize_participants,
 };
-use wacore::types::message::AddressingMode;
-use wacore_binary::jid::Jid;
+use wa_rs_core::types::message::AddressingMode;
+use wa_rs_binary::jid::Jid;
 
-pub use wacore::iq::groups::{
+pub use wa_rs_core::iq::groups::{
     GroupCreateOptions, GroupDescription, GroupParticipantOptions, GroupSubject, MemberAddMode,
     MemberLinkMode, MembershipApprovalMode, ParticipantChangeResponse,
 };
@@ -267,5 +267,5 @@ mod tests {
         assert!(metadata.participants[0].is_admin);
     }
 
-    // Protocol-level tests (node building, parsing, validation) are in wacore/src/iq/groups.rs
+    // Protocol-level tests (node building, parsing, validation) are in wa_rs_core/src/iq/groups.rs
 }

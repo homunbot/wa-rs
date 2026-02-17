@@ -2,7 +2,7 @@ use crate::libsignal::protocol::PreKeyBundle;
 use crate::types::message::AddressingMode;
 use async_trait::async_trait;
 use std::collections::HashMap;
-use wacore_binary::jid::Jid;
+use wa_rs_binary::jid::Jid;
 
 fn build_pn_to_lid_map(lid_to_pn_map: &HashMap<String, Jid>) -> HashMap<String, Jid> {
     lid_to_pn_map

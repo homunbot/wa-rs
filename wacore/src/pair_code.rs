@@ -28,9 +28,9 @@ use ctr::Ctr128BE;
 use hkdf::Hkdf;
 use rand::Rng;
 use sha2::Sha256;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::SERVER_JID;
-use wacore_binary::node::{Node, NodeContent};
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::SERVER_JID;
+use wa_rs_binary::node::{Node, NodeContent};
 
 // Type aliases
 type Aes256Ctr = Ctr128BE<aes::Aes256>;

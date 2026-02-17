@@ -1,8 +1,8 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use wacore_binary::jid::Jid;
-use waproto::whatsapp as wa;
+use wa_rs_binary::jid::Jid;
+use wa_rs_proto::whatsapp as wa;
 
 #[derive(Debug, Clone)]
 pub struct VerifiedName {

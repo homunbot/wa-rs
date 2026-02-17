@@ -1,1 +1,1 @@
-pub use wacore::store::traits::*;
+pub use wa_rs_core::store::traits::*;

@@ -1,5 +1,5 @@
 use std::fmt::{self, Write as _};
-use wacore_binary::node::{Node, NodeContent, NodeContentRef, NodeRef};
+use wa_rs_binary::node::{Node, NodeContent, NodeContentRef, NodeRef};
 
 pub struct DisplayableNode<'a>(pub &'a Node);
 

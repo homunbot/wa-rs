@@ -5,7 +5,7 @@
 
 use anyhow::Result;
 use log::{debug, info, warn};
-use wacore_binary::jid::Jid;
+use wa_rs_binary::jid::Jid;
 
 use super::Client;
 
@@ -138,7 +138,7 @@ impl Client {
     /// Stores under LID when mapping is known, otherwise under PN.
     pub(crate) async fn update_device_list(
         &self,
-        mut record: wacore::store::traits::DeviceListRecord,
+        mut record: wa_rs_core::store::traits::DeviceListRecord,
     ) -> Result<()> {
         use anyhow::Context;
 
@@ -372,9 +372,9 @@ mod tests {
         client.lid_pn_cache.add(entry).await;
 
         // Manually insert into cache to test lookup logic
-        let record = wacore::store::traits::DeviceListRecord {
+        let record = wa_rs_core::store::traits::DeviceListRecord {
             user: lid.to_string(),
-            devices: vec![wacore::store::traits::DeviceInfo {
+            devices: vec![wa_rs_core::store::traits::DeviceInfo {
                 device_id: 1,
                 key_index: None,
             }],
@@ -404,7 +404,7 @@ mod tests {
     #[tokio::test]
     async fn test_invalidate_device_cache_uses_correct_jid_types() {
         use crate::lid_pn_cache::LidPnEntry;
-        use wacore_binary::jid::Jid;
+        use wa_rs_binary::jid::Jid;
 
         let client = create_test_client().await;
         let lid = "100000000000001";
@@ -415,9 +415,9 @@ mod tests {
         client.lid_pn_cache.add(entry).await;
 
         // Insert device registry record
-        let record = wacore::store::traits::DeviceListRecord {
+        let record = wa_rs_core::store::traits::DeviceListRecord {
             user: lid.to_string(),
-            devices: vec![wacore::store::traits::DeviceInfo {
+            devices: vec![wa_rs_core::store::traits::DeviceInfo {
                 device_id: 1,
                 key_index: None,
             }],
@@ -475,9 +475,9 @@ mod tests {
 
         // Also test invalidation when called with LID directly
         // Re-insert entries
-        let record2 = wacore::store::traits::DeviceListRecord {
+        let record2 = wa_rs_core::store::traits::DeviceListRecord {
             user: lid.to_string(),
-            devices: vec![wacore::store::traits::DeviceInfo {
+            devices: vec![wa_rs_core::store::traits::DeviceInfo {
                 device_id: 2,
                 key_index: None,
             }],
@@ -519,7 +519,7 @@ mod tests {
     /// The fix invalidates BOTH types to ensure we clean up regardless.
     #[tokio::test]
     async fn test_invalidate_device_cache_unknown_user_invalidates_both_types() {
-        use wacore_binary::jid::Jid;
+        use wa_rs_binary::jid::Jid;
 
         let client = create_test_client().await;
         // This user has NO LID-PN mapping in the cache

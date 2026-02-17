@@ -1,9 +1,9 @@
 use crate::client::Client;
 use log::{debug, warn};
-use wacore::StringEnum;
-use wacore::iq::tctoken::build_tc_token_node;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::Jid;
+use wa_rs_core::StringEnum;
+use wa_rs_core::iq::tctoken::build_tc_token_node;
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::Jid;
 
 /// Presence status for online/offline state.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, StringEnum)]
@@ -131,8 +131,8 @@ mod tests {
     use crate::store::commands::DeviceCommand;
     use anyhow::Result;
     use std::sync::Arc;
-    use wacore::store::traits::Backend;
-    use whatsapp_rust_tokio_transport::TokioWebSocketTransportFactory;
+    use wa_rs_core::store::traits::Backend;
+    use wa_rs_tokio_transport::TokioWebSocketTransportFactory;
 
     // Mock HTTP client for testing
     #[derive(Debug, Clone)]

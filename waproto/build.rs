@@ -4,12 +4,12 @@
 //
 // 1. Format the proto file (requires `buf` CLI: https://buf.build/docs/installation):
 //    ```
-//    buf format waproto/src/whatsapp.proto -w
+//    buf format wa_rs_proto/src/whatsapp.proto -w
 //    ```
 //
 // 2. Regenerate the Rust code:
 //    ```
-//    GENERATE_PROTO=1 cargo build -p waproto
+//    GENERATE_PROTO=1 cargo build -p wa_rs_proto
 //    ```
 //
 // 3. Fix any breaking changes in the codebase (e.g., `optional` -> `required` field changes)

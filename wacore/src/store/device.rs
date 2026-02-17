@@ -3,8 +3,8 @@ use once_cell::sync::Lazy;
 use prost::Message;
 use serde::{Deserialize, Serialize};
 use serde_big_array::BigArray;
-use wacore_binary::jid::Jid;
-use waproto::whatsapp as wa;
+use wa_rs_binary::jid::Jid;
+use wa_rs_proto::whatsapp as wa;
 
 pub mod key_pair_serde {
     use super::KeyPair;

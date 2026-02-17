@@ -1,7 +1,7 @@
-pub use wacore::{iq::privacy as privacy_settings, proto_helpers, store::traits};
-pub use wacore_binary::builder::NodeBuilder;
-pub use wacore_binary::jid::Jid;
-pub use waproto;
+pub use wa_rs_core::{iq::privacy as privacy_settings, proto_helpers, store::traits};
+pub use wa_rs_binary::builder::NodeBuilder;
+pub use wa_rs_binary::jid::Jid;
+pub use wa_rs_proto;
 
 pub mod http;
 pub mod types;

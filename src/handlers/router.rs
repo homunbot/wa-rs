@@ -2,7 +2,7 @@ use super::traits::StanzaHandler;
 use crate::client::Client;
 use std::collections::HashMap;
 use std::sync::Arc;
-use wacore_binary::node::Node;
+use wa_rs_binary::node::Node;
 
 /// Central router for dispatching XML stanzas to their appropriate handlers.
 ///
@@ -76,7 +76,7 @@ mod tests {
     use super::*;
     use crate::test_utils::MockHttpClient;
     use std::sync::Arc;
-    use wacore_binary::node::{Attrs, Node, NodeContent};
+    use wa_rs_binary::node::{Attrs, Node, NodeContent};
 
     #[derive(Debug)]
     struct MockHandler {

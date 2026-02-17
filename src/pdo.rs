@@ -21,9 +21,9 @@ use moka::future::Cache;
 use prost::Message;
 use std::sync::Arc;
 use std::time::Duration;
-use wacore::types::message::{EditAttribute, MessageSource, MsgMetaInfo};
-use wacore_binary::jid::{Jid, JidExt};
-use waproto::whatsapp as wa;
+use wa_rs_core::types::message::{EditAttribute, MessageSource, MsgMetaInfo};
+use wa_rs_binary::jid::{Jid, JidExt};
+use wa_rs_proto::whatsapp as wa;
 
 /// Cache entry for pending PDO requests.
 /// Contains the original message info needed to properly dispatch the response.
@@ -282,7 +282,7 @@ impl Client {
 
         self.core
             .event_bus
-            .dispatch(&wacore::types::events::Event::Message(
+            .dispatch(&wa_rs_core::types::events::Event::Message(
                 Box::new(message),
                 message_info,
             ));
@@ -371,7 +371,7 @@ impl Client {
         if info.source.is_from_me {
             return;
         }
-        if info.source.chat.server == wacore_binary::jid::BROADCAST_SERVER {
+        if info.source.chat.server == wa_rs_binary::jid::BROADCAST_SERVER {
             return;
         }
 
@@ -406,7 +406,7 @@ impl Client {
 
 #[cfg(test)]
 mod tests {
-    use wacore_binary::jid::{DEFAULT_USER_SERVER, Jid, JidExt};
+    use wa_rs_binary::jid::{DEFAULT_USER_SERVER, Jid, JidExt};
 
     #[test]
     fn test_pdo_primary_phone_jid_is_device_0() {

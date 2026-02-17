@@ -6,7 +6,7 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use tokio::sync::{Notify, RwLock};
 use tokio::time::{Duration, sleep};
-use wacore_binary::jid::Jid;
+use wa_rs_binary::jid::Jid;
 
 pub struct PersistenceManager {
     device: Arc<RwLock<Device>>,

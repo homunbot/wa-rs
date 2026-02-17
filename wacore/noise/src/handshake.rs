@@ -2,9 +2,9 @@ use crate::error::NoiseError;
 use crate::state::{NoiseCipher, NoiseState};
 use prost::Message;
 use thiserror::Error;
-use wacore_libsignal::protocol::{KeyPair, PrivateKey, PublicKey};
-use waproto::whatsapp::cert_chain::noise_certificate;
-use waproto::whatsapp::{self as wa, CertChain, HandshakeMessage};
+use wa_rs_libsignal::protocol::{KeyPair, PrivateKey, PublicKey};
+use wa_rs_proto::whatsapp::cert_chain::noise_certificate;
+use wa_rs_proto::whatsapp::{self as wa, CertChain, HandshakeMessage};
 
 const WA_CERT_ISSUER_SERIAL: i64 = 0;
 

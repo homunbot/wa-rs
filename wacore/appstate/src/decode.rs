@@ -2,8 +2,8 @@ use crate::AppStateError;
 use crate::hash::{generate_content_mac, validate_index_mac};
 use crate::keys::ExpandedAppStateKeys;
 use prost::Message;
-use wacore_libsignal::crypto::aes_256_cbc_decrypt_into;
-use waproto::whatsapp as wa;
+use wa_rs_libsignal::crypto::aes_256_cbc_decrypt_into;
+use wa_rs_proto::whatsapp as wa;
 
 /// A decoded mutation from an app state record.
 #[derive(Debug, Clone)]
@@ -147,7 +147,7 @@ mod tests {
     use crate::hash::generate_content_mac;
     use crate::keys::expand_app_state_keys;
     use prost::Message;
-    use wacore_libsignal::crypto::aes_256_cbc_encrypt_into;
+    use wa_rs_libsignal::crypto::aes_256_cbc_encrypt_into;
 
     fn create_test_record(
         op: wa::syncd_mutation::SyncdOperation,

@@ -9,14 +9,14 @@ use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 use log::warn;
 use prost::Message;
 use std::sync::Arc;
-use wacore::appstate::hash::HashState;
-use wacore::appstate::processor::AppStateMutationMAC;
-use wacore::libsignal::protocol::{KeyPair, PrivateKey, PublicKey};
-use wacore::store::Device as CoreDevice;
-use wacore::store::error::{Result, StoreError};
-use wacore::store::traits::*;
-use wacore_binary::jid::Jid;
-use waproto::whatsapp as wa;
+use wa_rs_core::appstate::hash::HashState;
+use wa_rs_core::appstate::processor::AppStateMutationMAC;
+use wa_rs_core::libsignal::protocol::{KeyPair, PrivateKey, PublicKey};
+use wa_rs_core::store::Device as CoreDevice;
+use wa_rs_core::store::error::{Result, StoreError};
+use wa_rs_core::store::traits::*;
+use wa_rs_binary::jid::Jid;
+use wa_rs_proto::whatsapp as wa;
 
 const MIGRATIONS: EmbeddedMigrations = embed_migrations!("migrations");
 
@@ -305,7 +305,7 @@ impl SqliteStore {
                 .get()
                 .map_err(|e| StoreError::Connection(e.to_string()))?;
 
-            let new_device = wacore::store::Device::new();
+            let new_device = wa_rs_core::store::Device::new();
 
             let noise_key_data = {
                 let mut bytes = Vec::with_capacity(64);
@@ -476,7 +476,7 @@ impl SqliteStore {
                 app_version_tertiary: app_version_tertiary.try_into().unwrap_or(0u32),
                 app_version_last_fetched_ms,
                 device_props: {
-                    use wacore::store::device::DEVICE_PROPS;
+                    use wa_rs_core::store::device::DEVICE_PROPS;
                     DEVICE_PROPS.clone()
                 },
                 edge_routing_info,

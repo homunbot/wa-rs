@@ -8,11 +8,11 @@ use hmac::{Hmac, Mac};
 use prost::Message;
 use rand::TryRngCore;
 use sha2::Sha256;
-use wacore_binary::builder::NodeBuilder;
-use wacore_binary::jid::{Jid, SERVER_JID};
-use wacore_binary::node::Node;
-use waproto::whatsapp as wa;
-use waproto::whatsapp::AdvEncryptionType;
+use wa_rs_binary::builder::NodeBuilder;
+use wa_rs_binary::jid::{Jid, SERVER_JID};
+use wa_rs_binary::node::Node;
+use wa_rs_proto::whatsapp as wa;
+use wa_rs_proto::whatsapp::AdvEncryptionType;
 
 // Prefixes from whatsmeow/pair.go, crucial for signature verification
 const ADV_PREFIX_ACCOUNT_SIGNATURE: &[u8] = &[6, 0];

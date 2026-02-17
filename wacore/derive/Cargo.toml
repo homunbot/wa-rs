@@ -1,10 +1,10 @@
 [package]
-name = "wacore-derive"
+name = "wa-rs-derive"
 version = "0.2.0"
 edition = "2024"
 authors = ["João Lucas <jlucaso@hotmail.com>"]
 license = "MIT"
-repository = "https://github.com/jlucaso1/whatsapp-rust"
+repository = "https://github.com/homunbot/wa-rs"
 description = "Derive macros for wacore protocol types"
 
 [lib]
