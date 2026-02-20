@@ -523,6 +523,19 @@ impl BotBuilder {
                 .await;
         }
 
+        // If pair code was requested, clear existing device identity so the handshake
+        // sends a registration payload instead of a login payload. This ensures fresh
+        // pairing even when an old (possibly invalidated) session DB exists.
+        if self.pair_code_options.is_some() {
+            let snapshot = persistence_manager.get_device_snapshot().await;
+            if snapshot.pn.is_some() {
+                info!("Pair code requested with existing session — clearing device identity for fresh pairing");
+                persistence_manager
+                    .process_command(DeviceCommand::SetId(None))
+                    .await;
+            }
+        }
+
         info!("Creating client...");
         let (client, sync_task_receiver) = Client::new(
             persistence_manager.clone(),
